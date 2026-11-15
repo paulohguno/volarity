@@ -1,0 +1,237 @@
+/* ============================================================
+   Volarity · notebook + dashboard web do síndico (ADENDO 1)
+   ============================================================ */
+
+.notebook{
+  width:960px;
+  flex:none;
+  position:relative;
+}
+.notebook__tampa{
+  background:#1E2030;
+  border-radius:14px 14px 0 0;
+  padding:10px 10px 12px;
+  box-shadow:0 2px 4px rgba(0,0,0,.3), 0 50px 100px -40px rgba(0,0,0,.65);
+  position:relative;
+}
+.notebook__tampa::before{
+  content:""; position:absolute; top:4px; left:50%; transform:translateX(-50%);
+  width:5px; height:5px; border-radius:50%; background:#3A3D52;
+}
+.notebook__tela{
+  background:var(--branco);
+  border-radius:4px;
+  overflow:hidden;
+  aspect-ratio:16/10;
+  display:flex;
+  font-family:var(--texto-f);
+  color:var(--tinta);
+  font-size:11px;
+}
+.notebook__base{
+  height:14px;
+  background:linear-gradient(180deg,#2A2C3E 0%,#1B1D2B 100%);
+  border-radius:0 0 12px 12px;
+  position:relative;
+}
+.notebook__base::after{
+  content:""; position:absolute; left:50%; top:0; transform:translateX(-50%);
+  width:120px; height:5px; border-radius:0 0 6px 6px; background:#14151F;
+}
+
+/* sidebar */
+.dash__lado{
+  width:132px; flex:none;
+  background:var(--clara);
+  border-right:1px solid var(--borda);
+  padding:14px 12px;
+  display:flex; flex-direction:column; gap:16px;
+}
+.dash__marca{
+  font-family:var(--display); font-weight:600; font-size:13px;
+  letter-spacing:-.03em;
+}
+.dash__marca span{ display:block; font-family:var(--texto-f); font-size:8px; font-weight:400; letter-spacing:0; color:var(--texto-2); margin-top:1px; }
+.dash__nav{ display:flex; flex-direction:column; gap:2px; }
+.dash__nav li{
+  font-size:9.5px; color:var(--texto-2); padding:5px 7px; border-radius:5px;
+  display:flex; align-items:center; gap:6px;
+}
+.dash__nav li[aria-current="page"]{ background:var(--branco); color:var(--tinta); font-weight:600; box-shadow:0 1px 2px rgba(43,45,66,.06); }
+.dash__nav i{ width:4px; height:4px; border-radius:50%; background:currentColor; opacity:.5; flex:none; }
+.dash__selo{
+  margin-top:auto; font-size:8px; color:var(--texto-2); line-height:1.4;
+  border-top:1px solid var(--borda); padding-top:8px;
+}
+
+/* conteúdo */
+.dash__corpo{ flex:1; min-width:0; padding:14px 16px; display:flex; flex-direction:column; gap:10px; overflow:hidden; }
+.dash__topo{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+.dash__topo h4{ font-size:13px; font-weight:600; letter-spacing:-.02em; margin:0; }
+.dash__topo p{ font-size:8.5px; color:var(--texto-2); margin:2px 0 0; }
+.dash__chip{
+  font-size:8px; font-weight:600; color:var(--texto-2);
+  border:1px solid var(--borda); border-radius:999px; padding:3px 8px;
+  white-space:nowrap;
+}
+.dash__grade{ display:grid; grid-template-columns:1.15fr .85fr; gap:10px; }
+
+.dash-card{
+  border:1px solid var(--borda);
+  border-radius:8px;
+  padding:10px;
+  background:var(--branco);
+  min-width:0;
+}
+.dash-card__rot{
+  font-size:8px; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--texto-2); font-weight:600; margin-bottom:6px;
+  display:flex; align-items:center; justify-content:space-between; gap:6px;
+}
+.dash-card__rot em{ font-style:normal; text-transform:none; letter-spacing:0; font-weight:500; color:var(--aco); }
+
+/* carro + wallbox */
+.carro-palco{
+  position:relative;
+  height:74px;
+  display:flex; align-items:flex-end; justify-content:center;
+  margin-bottom:6px;
+}
+.carro-palco svg{ width:150px; height:auto; }
+.wallbox{
+  position:absolute; right:6px; bottom:6px;
+  width:16px; height:26px; border-radius:3px;
+  border:1.5px solid var(--tinta);
+  display:grid; place-items:center;
+}
+.wallbox::after{ content:""; width:5px; height:5px; border-radius:50%; border:1.5px solid var(--tinta); }
+.cabo{
+  position:absolute; right:20px; bottom:12px;
+  width:34px; height:22px;
+  border-top:1.5px solid var(--tinta);
+  border-right:1.5px solid var(--tinta);
+  border-radius:0 12px 0 0;
+  transform:rotate(-8deg);
+  transform-origin:right bottom;
+}
+
+/* barra de bateria */
+.bateria{
+  height:8px; border-radius:999px; background:var(--clara-2);
+  overflow:hidden; position:relative; margin:8px 0 6px;
+}
+.bateria i{
+  display:block; height:100%; width:64%;
+  background:var(--tinta);
+  border-radius:999px;
+  position:relative;
+}
+.bateria i::after{
+  content:""; position:absolute; right:0; top:0; bottom:0; width:10px;
+  background:var(--mostarda); border-radius:0 999px 999px 0;
+}
+.bateria__legenda{ display:flex; justify-content:space-between; font-size:8px; color:var(--texto-2); font-variant-numeric:tabular-nums; }
+
+.dash-dados{ display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px; }
+.dash-dados div{ display:flex; flex-direction:column; gap:1px; }
+.dash-dados span{ font-size:7.5px; color:var(--texto-2); text-transform:uppercase; letter-spacing:.06em; }
+.dash-dados b{ font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-.01em; }
+
+/* vaga 09 */
+.vaga-livre{ display:flex; flex-direction:column; gap:6px; }
+.vaga-livre__estado{
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:9px; font-weight:600; color:var(--texto-2);
+}
+.vaga-livre__estado i{ width:5px; height:5px; border-radius:50%; border:1.5px solid var(--aco); }
+.vaga-livre__prox{ font-size:9px; color:var(--texto-2); line-height:1.4; font-variant-numeric:tabular-nums; }
+.vaga-livre__prox b{ color:var(--tinta); font-weight:600; }
+.vaga-livre__mini{ margin-top:auto; display:flex; gap:3px; align-items:flex-end; height:22px; }
+.vaga-livre__mini i{ flex:1; background:var(--clara-2); border-radius:2px; }
+
+/* tabela do dashboard */
+.dash-tabela{ font-size:9px; }
+.dash-tabela th{
+  text-align:right; font-size:7.5px; text-transform:uppercase; letter-spacing:.07em;
+  color:var(--texto-2); font-weight:600; padding:0 0 4px;
+}
+.dash-tabela th:first-child{ text-align:left; }
+.dash-tabela td{
+  text-align:right; padding:3.5px 0; border-top:1px solid var(--clara-2);
+  font-variant-numeric:tabular-nums;
+}
+.dash-tabela td:first-child{ text-align:left; font-weight:500; }
+.dash-tabela tr:last-child td{ border-top:1px solid var(--borda); font-weight:600; }
+
+/* gráfico de barras finas */
+.dash-grafico{ display:flex; align-items:flex-end; gap:2px; height:44px; margin-top:4px; }
+.dash-grafico i{ flex:1; background:var(--aco); border-radius:1px; min-height:2px; }
+.dash-grafico__eixo{ display:flex; justify-content:space-between; font-size:7px; color:var(--texto-2); margin-top:3px; }
+
+/* ============================================================
+   Faixa "Como funciona" — funil (PEDIDOS v2)
+   ============================================================ */
+.funil{ margin-top:clamp(56px,7vw,88px); }
+.funil__grupo{
+  font-size:var(--t-micro); text-transform:uppercase; letter-spacing:.08em;
+  color:var(--aco); font-weight:500; margin-bottom:18px;
+}
+.funil__vagas{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  margin-bottom:0;
+}
+.vaga{
+  border:1px solid var(--borda);
+  border-radius:var(--r-cartao);
+  padding:14px 12px;
+  background:var(--branco);
+  text-align:center;
+}
+.vaga b{ display:block; font-size:13px; font-weight:600; letter-spacing:-.01em; }
+.vaga span{ display:block; font-size:10px; color:var(--texto-2); margin-top:3px; }
+.vaga em{
+  display:block; font-style:normal; font-size:9px; color:var(--aco);
+  margin-top:8px; padding-top:8px; border-top:1px solid var(--clara-2);
+  letter-spacing:.02em;
+}
+
+.funil__linhas{ height:44px; position:relative; }
+.funil__linhas svg{ width:100%; height:100%; overflow:visible; }
+.funil__linhas path{
+  fill:none; stroke:var(--aco); stroke-width:1;
+  stroke-dasharray:var(--len,200); stroke-dashoffset:var(--len,200);
+}
+.funil__linhas circle{ fill:var(--mostarda); opacity:0; }
+
+.funil__no{
+  display:flex; align-items:center; gap:12px;
+  border:1px solid var(--borda);
+  border-radius:var(--r-cartao);
+  padding:14px 16px;
+  background:var(--branco);
+  margin-bottom:10px;
+}
+.funil__no svg{ width:22px; height:22px; flex:none; color:var(--tinta); }
+.funil__no b{ font-size:13px; font-weight:600; letter-spacing:-.01em; display:block; }
+.funil__no span{ font-size:10px; color:var(--texto-2); display:block; margin-top:1px; }
+.funil__no--duplo svg + svg{ margin-left:-6px; }
+
+.funil__modulos{ display:grid; gap:10px; }
+@media (min-width:760px){ .funil__modulos{ grid-template-columns:repeat(3,1fr); } }
+.modulo{
+  border:1px solid var(--borda);
+  border-radius:var(--r-cartao);
+  padding:16px;
+  background:var(--branco);
+}
+.modulo svg{ width:20px; height:20px; color:var(--tinta); margin-bottom:10px; }
+.modulo b{ display:block; font-size:13px; font-weight:600; letter-spacing:-.01em; }
+.modulo span{ display:block; font-size:10px; color:var(--texto-2); margin-top:2px; }
+.modulo__icones{ display:flex; gap:6px; margin-top:10px; padding-top:10px; border-top:1px solid var(--clara-2); color:var(--aco); }
+.modulo__icones svg{ width:16px; height:16px; margin:0; }
+
+/* versão desktop: funil horizontal compacto */
+@media (min-width:900px){
+  .funil__vagas{ gap:16px; }
+  .funil__linhas{ height:56px; }
+}

@@ -1,0 +1,211 @@
+/* ============================================================
+   Volarity · protótipo do app — base
+   tokens de MARCA.md / DESIGN.md · moldura, status bar, tab bar
+   este arquivo: tokens + moldura + status bar (o resto em app-2.css)
+   ============================================================ */
+
+@import url("app-2.css");
+
+:root{
+  /* base — MARCA.md */
+  --tinta:    #2B2D42;
+  --aco:      #8D99AE;
+  --clara:    #EDF2F4;
+  --mostarda: #D7951B;
+  --verde:    #3B481C;
+
+  /* derivados do mesmo sistema */
+  --branco:   #FFFFFF;
+  --clara-2:  #E1E8EB;
+  --tinta-2:  #34374F;
+  --tinta-3:  #3F4259;
+
+  /* texto */
+  --texto:    #2B2D42;
+  --texto-2:  #6D788D;
+  --texto-3:  #9AA4B6;
+  --texto-inv:   #EDF2F4;
+  --texto-inv-2: #8D99AE;
+  --borda:       #DCE3E7;
+  --borda-esc:   rgba(141,153,174,.22);
+
+  /* dados */
+  --dado-1: #8D99AE;
+  --dado-2: #B9C2D0;
+  --dado-realce: #2B2D42;
+
+  /* tipografia do app — tamanho real de iOS, não escala */
+  --f-app: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter Tight", system-ui, "Segoe UI", sans-serif;
+  --f-num: "Inter Tight", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --t-app: 15px;
+  --t-app-mini: 10px;
+  --t-app-num: 40px;
+
+  /* forma */
+  --r-4: 4px; --r-8: 8px; --r-12: 12px; --r-20: 20px; --r-28: 28px;
+
+  /* sombras */
+  --sombra-cartao: 0 1px 2px rgba(43,45,66,.06), 0 8px 24px -12px rgba(43,45,66,.14);
+  --sombra-phone: 0 2px 4px rgba(43,45,66,.10), 0 40px 80px -36px rgba(43,45,66,.42);
+
+  /* motion */
+  --e-saida: cubic-bezier(.22,.61,.36,1);
+  --e-suave: cubic-bezier(.33,1,.68,1);
+  --e-ios:   cubic-bezier(.32,.72,0,1);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+
+html,body{ margin:0; padding:0; }
+
+body{
+  background: var(--clara-2);
+  color: var(--texto);
+  font-family: var(--f-app);
+  font-size: var(--t-app);
+  line-height: 1.35;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+button{ font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+a{ color: inherit; text-decoration: none; }
+p,h1,h2,h3,ul,ol,li,pre{ margin: 0; padding: 0; }
+ul,ol{ list-style: none; }
+svg{ display: block; }
+
+:focus-visible{ outline: 2px solid var(--tinta); outline-offset: 3px; border-radius: 4px; }
+
+/* números sempre tabulares */
+.num, .dado__val, .linha__dir, .tabela, .dash, .statusbar__hora, .anel__pct{
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ============================================================
+   página / palco
+   ============================================================ */
+
+.pagina-fundo{
+  position: fixed; inset: 0; z-index: 0;
+  background: var(--clara-2);
+  pointer-events: none;
+}
+
+.palco{
+  position: relative; z-index: 1;
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 18px;
+  padding: 28px 20px 24px;
+}
+
+/* links fora do aparelho */
+.fora{
+  width: 100%; max-width: 420px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  font-size: 12px; line-height: 1.2;
+  color: var(--texto-2);
+}
+.voltar{
+  display: inline-flex; align-items: center; gap: 4px;
+  min-height: 32px; padding: 0 2px;
+  font-weight: 500;
+  color: var(--texto-2);
+  transition: color .18s var(--e-saida);
+}
+.voltar:hover{ color: var(--tinta); }
+.selo-demo{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 9px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  background: rgba(255,255,255,.6);
+  font-size: 10.5px; font-weight: 500; letter-spacing: .01em;
+  color: var(--texto-2);
+  white-space: nowrap;
+}
+.selo-demo::before{
+  content: ""; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--aco);
+}
+.fora--rodape{
+  flex-direction: column; align-items: center; gap: 3px;
+  text-align: center;
+  font-size: 11px; color: var(--texto-2);
+}
+.fora__nota{ font-size: 10.5px; color: var(--texto-3); }
+
+/* ============================================================
+   iPhone — moldura
+   ============================================================ */
+
+.aparelho{
+  position: relative;
+  width: 410px; height: 864px;
+  flex: none;
+  border-radius: 60px;
+  background: var(--tinta-2);
+  box-shadow: var(--sombra-phone);
+  padding: 0;
+}
+.aparelho__borda{
+  width: 100%; height: 100%;
+  padding: 10px;
+  border-radius: 60px;
+  border: 1px solid rgba(237,242,244,.14);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.28);
+}
+.aparelho__tela{
+  position: relative;
+  width: 390px; height: 844px;
+  border-radius: 50px;
+  overflow: hidden;
+  background: var(--branco);
+  display: flex; flex-direction: column;
+  isolation: isolate;
+}
+
+/* ============================================================
+   status bar iOS
+   ============================================================ */
+
+.statusbar{
+  position: relative; z-index: 6;
+  flex: none;
+  height: 52px;
+  padding: 0 26px 0 30px;
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--tinta);
+  font-size: 14px; font-weight: 600; letter-spacing: -.01em;
+  background: transparent;
+  pointer-events: none;
+}
+.statusbar__hora{ font-family: var(--f-num); font-weight: 600; }
+.statusbar__ilha{
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 108px; height: 31px; border-radius: 999px;
+  background: var(--tinta);
+}
+.statusbar__icones{ display: flex; align-items: center; gap: 5px; }
+.statusbar__bateria{
+  position: relative;
+  width: 24px; height: 12px;
+  border: 1px solid currentColor; border-radius: 3.5px;
+  opacity: .9;
+}
+.statusbar__bateria::after{
+  content: ""; position: absolute; right: -3px; top: 3.5px;
+  width: 2px; height: 4px; border-radius: 0 1px 1px 0;
+  background: currentColor; opacity: .5;
+}
+.statusbar__bateria i{
+  position: absolute; inset: 1.5px; width: 62%;
+  border-radius: 2px; background: currentColor;
+}
+

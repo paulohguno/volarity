@@ -1,0 +1,234 @@
+/* ============================================================
+   área rolável + persona
+   ============================================================ */
+
+.conteudo{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.conteudo::-webkit-scrollbar{ display: none; }
+
+.persona{
+  position: sticky; top: 0; z-index: 4;
+  display: flex; align-items: center; gap: 2px;
+  width: max-content;
+  margin: 2px 16px 10px;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--clara-2);
+}
+.persona__btn{
+  min-height: 30px; padding: 0 13px;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 600; letter-spacing: -.005em;
+  color: var(--texto-2);
+  transition: color .18s var(--e-saida), background .18s var(--e-saida);
+}
+.persona__btn[aria-selected="true"]{
+  background: var(--branco);
+  color: var(--tinta);
+  box-shadow: 0 1px 2px rgba(43,45,66,.10);
+}
+
+/* ============================================================
+   tab bar iOS
+   ============================================================ */
+
+.tabbar{
+  position: relative; z-index: 5;
+  flex: none;
+  height: 78px;
+  padding: 8px 4px 0;
+  display: grid; grid-template-columns: repeat(4,1fr);
+  align-items: start;
+  background: rgba(255,255,255,.86);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(43,45,66,.08);
+}
+.tab{
+  position: relative;
+  display: grid; justify-items: center; gap: 3px;
+  min-height: 44px;
+  padding-top: 2px;
+  font-size: var(--t-app-mini); font-weight: 500; line-height: 1;
+  color: var(--aco);
+  transition: color .16s var(--e-saida);
+}
+.tab__ico svg{ width: 24px; height: 24px; }
+.tab__lbl{ letter-spacing: .005em; }
+.tab[aria-selected="true"], .tab.is-ativo{ color: var(--tinta); }
+.tab__ponto{
+  position: absolute; top: 0; right: 50%; margin-right: -16px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--tinta);
+  box-shadow: 0 0 0 2px rgba(255,255,255,.9);
+}
+
+/* home bar */
+.homebar{
+  position: absolute; z-index: 7;
+  bottom: 8px; left: 50%; transform: translateX(-50%);
+  width: 132px; height: 5px; border-radius: 999px;
+  background: rgba(43,45,66,.78);
+  pointer-events: none;
+}
+
+/* ============================================================
+   notificação push (desce do topo)
+   ============================================================ */
+
+.push{
+  position: absolute; z-index: 20;
+  top: 8px; left: 8px; right: 8px;
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px;
+  border-radius: 22px;
+  background: rgba(255,255,255,.92);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 1px 2px rgba(43,45,66,.10), 0 18px 40px -18px rgba(43,45,66,.45);
+  transform: translateY(-140%);
+  opacity: 0;
+  transition: transform .52s var(--e-ios), opacity .3s var(--e-saida);
+  pointer-events: none;
+}
+.push.is-visivel{ transform: translateY(0); opacity: 1; pointer-events: auto; }
+.push__icone{ flex: none; width: 32px; height: 32px; }
+.push__icone svg{ width: 32px; height: 32px; border-radius: 8px; }
+.push__texto{ min-width: 0; }
+.push__app{
+  display: flex; justify-content: space-between; gap: 8px;
+  font-size: 11px; font-weight: 500; color: var(--texto-2);
+  margin-bottom: 1px;
+}
+.push__app span{ color: var(--texto-3); font-weight: 400; }
+.push__titulo{ font-size: 13px; font-weight: 600; color: var(--tinta); letter-spacing: -.005em; }
+.push__corpo{ font-size: 13px; color: var(--texto-2); margin-top: 1px; }
+
+/* ============================================================
+   sheet iOS
+   ============================================================ */
+
+.sheet{ position: absolute; inset: 0; z-index: 30; }
+.sheet[hidden]{ display: none; }
+.sheet__fundo{
+  position: absolute; inset: 0;
+  background: rgba(43,45,66,.34);
+  animation: fundo-in .24s var(--e-saida) both;
+}
+.sheet__caixa{
+  position: absolute; left: 0; right: 0; bottom: 0;
+  max-height: 78%;
+  display: flex; flex-direction: column;
+  padding: 8px 16px 26px;
+  border-radius: 20px 20px 0 0;
+  background: var(--branco);
+  box-shadow: 0 -8px 40px -12px rgba(43,45,66,.35);
+  animation: sheet-in .34s var(--e-ios) both;
+}
+.sheet__puxador{
+  width: 36px; height: 5px; border-radius: 999px;
+  background: var(--clara-2); margin: 0 auto 12px;
+}
+.sheet__titulo{ font-size: 17px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 10px; }
+.sheet__resumo{
+  flex: 1 1 auto; min-height: 0; overflow: auto;
+  padding: 12px;
+  border-radius: var(--r-12);
+  background: var(--clara);
+  font-family: var(--f-app);
+  font-size: 12px; line-height: 1.55;
+  color: var(--texto-2);
+  white-space: pre-wrap;
+  font-variant-numeric: tabular-nums;
+}
+.sheet__acoes{ display: grid; gap: 8px; margin-top: 12px; }
+
+@keyframes sheet-in{ from{ transform: translateY(100%); } to{ transform: translateY(0); } }
+@keyframes fundo-in{ from{ opacity: 0; } to{ opacity: 1; } }
+
+/* ============================================================
+   botões
+   ============================================================ */
+
+.btn{
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 48px; padding: 0 18px;
+  border-radius: var(--r-12);
+  font-size: 15px; font-weight: 600; letter-spacing: -.01em;
+  transition: background .18s var(--e-saida), border-color .18s var(--e-saida), transform .12s var(--e-saida);
+}
+.btn:active{ transform: scale(.985); }
+.btn--bloco{ width: 100%; }
+.btn--primario{ background: var(--tinta); color: var(--clara); }
+.btn--primario:hover{ background: var(--tinta-2); }
+.btn--contorno{
+  background: transparent; color: var(--tinta);
+  border: 1px solid var(--clara-2);
+}
+.btn--contorno:hover{ border-color: var(--aco); }
+.btn--mini{ min-height: 36px; padding: 0 12px; font-size: 13px; border-radius: var(--r-8); }
+.btn[disabled]{ opacity: .45; pointer-events: none; }
+
+/* ============================================================
+   celular: tela cheia, sem moldura
+   ============================================================ */
+
+@media (max-width: 480px){
+  .palco{
+    padding: 0; gap: 0;
+    justify-content: flex-start;
+    min-height: 100svh;
+  }
+  .fora{
+    max-width: none;
+    height: 34px; flex: none;
+    padding: 0 16px;
+    background: var(--clara-2);
+    font-size: 11px;
+  }
+  .fora--rodape{ display: none; }
+  .selo-demo{ padding: 3px 8px; font-size: 10px; }
+  .aparelho{
+    width: 100%; height: calc(100svh - 34px);
+    border-radius: 0; box-shadow: none; background: var(--branco);
+  }
+  .aparelho__borda{ padding: 0; border: 0; border-radius: 0; box-shadow: none; }
+  .aparelho__tela{ width: 100%; height: 100%; border-radius: 0; }
+  .statusbar{ height: 44px; padding: 0 22px 0 24px; }
+  .statusbar__ilha{ display: none; }
+  .homebar{ display: none; }
+  .tabbar{ height: 72px; padding-bottom: env(safe-area-inset-bottom, 0); }
+}
+
+/* desktop baixo: encolhe a moldura sem perder proporção */
+@media (min-width: 481px) and (max-height: 940px){
+  .aparelho{ transform: scale(.9); transform-origin: center center; margin: -43px 0; }
+}
+@media (min-width: 481px) and (max-height: 800px){
+  .aparelho{ transform: scale(.78); margin: -95px 0; }
+}
+
+/* ============================================================
+   movimento reduzido / ?static=1
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+html.is-estatico *, html.is-estatico *::before, html.is-estatico *::after{
+  animation: none !important;
+  transition: none !important;
+}

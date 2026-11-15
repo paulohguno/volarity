@@ -1,0 +1,217 @@
+/* ---------- Gastos ---------- */
+
+.mes{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2px 16px 10px;
+}
+.mes__nome{ font-size: 15px; font-weight: 600; color: var(--tinta); letter-spacing: -.01em; }
+.mes__nav{ display: flex; gap: 2px; }
+.mes__btn{
+  width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center;
+  color: var(--texto-2);
+  transition: background .16s var(--e-saida), color .16s var(--e-saida);
+}
+.mes__btn:hover{ background: var(--clara); color: var(--tinta); }
+.mes__btn[disabled]{ opacity: .3; pointer-events: none; }
+.mes__btn svg{ width: 9px; height: 15px; }
+
+.total-mes{
+  margin: 0 16px;
+  padding: 18px;
+  border-radius: var(--r-20);
+  background: var(--branco);
+  border: 1px solid var(--clara-2);
+  box-shadow: var(--sombra-cartao);
+}
+.total-mes__rot{ font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--aco); }
+.total-mes__val{
+  display: block; margin-top: 4px;
+  font-family: var(--f-num); font-size: 40px; font-weight: 600; letter-spacing: -.035em; line-height: 1;
+  color: var(--tinta);
+}
+.total-mes__sub{ margin-top: 6px; font-size: 12px; color: var(--texto-2); }
+
+/* mini-barras por semana */
+.semanas{
+  display: grid; grid-template-columns: repeat(4,1fr);
+  align-items: end; gap: 10px;
+  height: 74px;
+  margin-top: 16px; padding-top: 12px;
+  border-top: 1px solid var(--clara-2);
+}
+.semana{ display: grid; justify-items: center; align-content: end; gap: 5px; height: 100%; }
+.semana__barra{
+  width: 8px; border-radius: 4px;
+  background: var(--aco);
+  min-height: 3px;
+  transition: height .6s var(--e-suave);
+}
+.semana__barra.is-atual{ background: var(--tinta); }
+.semana__rot{ font-size: 9px; color: var(--aco); letter-spacing: .02em; }
+
+/* comparação com eletroposto */
+.comparacao{
+  margin: 14px 16px 0;
+  padding: 13px 16px;
+  border-radius: var(--r-12);
+  background: var(--clara);
+  font-size: 12px; line-height: 1.45; color: var(--texto-2);
+}
+.comparacao b{ color: var(--tinta); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- Avisos ---------- */
+
+.avisos{ margin-top: 4px; }
+.aviso{
+  position: relative;
+  display: flex; align-items: flex-start; gap: 11px;
+  padding: 12px 16px;
+  min-height: 72px;
+  width: 100%; text-align: left;
+  background: var(--branco);
+  transition: background .16s var(--e-saida);
+}
+.aviso + .aviso::before{
+  content: ""; position: absolute; top: 0; left: 59px; right: 0;
+  height: 1px; background: var(--clara-2);
+}
+.aviso:hover{ background: #FAFCFD; }
+.aviso__ico{ flex: none; width: 32px; height: 32px; }
+.aviso__ico svg{ width: 32px; height: 32px; border-radius: 8px; }
+.aviso__meio{ flex: 1 1 auto; min-width: 0; }
+.aviso__topo{ display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.aviso__titulo{ font-size: 13px; font-weight: 600; color: var(--tinta); letter-spacing: -.005em; }
+.aviso__hora{ flex: none; font-size: 11px; color: var(--aco); font-variant-numeric: tabular-nums; }
+.aviso__corpo{ font-size: 13px; line-height: 1.35; color: var(--texto-2); margin-top: 1px; }
+.aviso__novo{
+  position: absolute; top: 16px; left: 6px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--mostarda);
+}
+.aviso.is-lido .aviso__titulo{ font-weight: 500; color: var(--texto-2); }
+.aviso.is-lido .aviso__novo{ display: none; }
+.aviso__tag{
+  display: inline-block; margin-top: 4px;
+  font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--verde);
+}
+
+/* ---------- Síndico ---------- */
+
+.sindico-cab{
+  margin: 0 16px 12px;
+  padding: 16px;
+  border-radius: var(--r-20);
+  background: var(--tinta);
+  color: var(--clara);
+}
+.sindico-cab__rot{ font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--aco); }
+.sindico-cab__titulo{
+  margin-top: 5px;
+  font-family: var(--f-num); font-size: 22px; font-weight: 600; letter-spacing: -.025em; line-height: 1.1;
+}
+.sindico-cab__meta{
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 10px;
+}
+.chip{
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(237,242,244,.22);
+  font-size: 10.5px; font-weight: 500; color: var(--clara);
+  font-variant-numeric: tabular-nums;
+}
+.chip--claro{ border-color: var(--clara-2); color: var(--texto-2); background: var(--branco); }
+
+/* tabela do relatório */
+.tabela-wrap{
+  margin: 0 16px;
+  border-radius: var(--r-12);
+  border: 1px solid var(--clara-2);
+  background: var(--branco);
+  overflow: hidden;
+}
+.tabela{ width: 100%; border-collapse: collapse; font-size: 13px; }
+.tabela th{
+  padding: 8px 10px;
+  background: var(--clara);
+  font-size: 10px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--texto-2); text-align: right;
+  white-space: nowrap;
+}
+.tabela th:first-child{ text-align: left; }
+.tabela td{
+  padding: 9px 10px;
+  border-top: 1px solid var(--clara-2);
+  text-align: right; color: var(--texto-2);
+  white-space: nowrap;
+}
+.tabela td:first-child{ text-align: left; font-weight: 600; color: var(--tinta); }
+.tabela tr.is-aberta td{ background: var(--clara); }
+.tabela tbody tr{ cursor: pointer; transition: background .14s var(--e-saida); }
+.tabela tbody tr:hover td{ background: #FAFCFD; }
+.tabela tfoot td{
+  border-top: 1px solid var(--aco);
+  font-weight: 600; color: var(--tinta);
+  background: var(--clara);
+}
+.tabela__detalhe td{
+  padding: 0 10px 10px;
+  background: var(--clara);
+  text-align: left;
+}
+.tabela__detalhe ul{ display: grid; gap: 4px; }
+.tabela__detalhe li{
+  display: flex; justify-content: space-between; gap: 10px;
+  font-size: 11.5px; color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+.tabela__detalhe li b{ color: var(--tinta); font-weight: 600; }
+
+/* rodapé fixo do síndico */
+.sindico-pe{
+  position: sticky; bottom: 0; z-index: 3;
+  margin-top: 14px;
+  padding: 12px 16px 14px;
+  background: rgba(255,255,255,.94);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--clara-2);
+}
+.sindico-pe__frase{
+  font-size: 12px; line-height: 1.4; color: var(--texto-2);
+  margin-bottom: 10px;
+}
+.sindico-pe__frase b{
+  display: block;
+  font-family: var(--f-num); font-size: 19px; font-weight: 600; letter-spacing: -.02em;
+  color: var(--tinta); font-variant-numeric: tabular-nums;
+}
+.sindico-pe__acoes{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sindico-pe__acoes .btn{ min-height: 44px; font-size: 13px; padding: 0 10px; }
+.sindico-nota{
+  padding: 10px 16px 0;
+  font-size: 11px; line-height: 1.45; color: var(--texto-3);
+}
+
+/* ---------- Cadastro (síndico) ---------- */
+
+.cadastro-item{ align-items: flex-start; }
+.cadastro-item .linha__av{ border-radius: 10px; }
+.cadastro-item__cartao{
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 3px;
+  font-size: 11px; color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+.cadastro-item__cartao svg{ width: 12px; height: 12px; color: var(--aco); }
+.cadastro-item__placa{
+  display: inline-block; margin-top: 3px;
+  padding: 1px 5px;
+  border: 1px solid var(--clara-2); border-radius: 3px;
+  font-size: 10px; font-weight: 600; letter-spacing: .06em; color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+

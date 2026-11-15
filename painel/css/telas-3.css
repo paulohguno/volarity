@@ -1,0 +1,278 @@
+/* ============================================================
+   DASHBOARD WEB — #dashboard
+   No celular/na moldura: versão compacta de 1 coluna.
+   No desktop com o aparelho em modo web (.aparelho.is-web):
+   painel largo, sidebar fina, grid de 12 colunas.
+   ============================================================ */
+
+.dash{ padding: 0 0 18px; }
+
+.dash__cab{
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 4px 16px 14px;
+}
+.dash__marca{
+  display: flex; align-items: center; gap: 7px;
+  font-family: var(--f-num); font-size: 15px; font-weight: 600; letter-spacing: -.03em;
+  color: var(--tinta);
+}
+.dash__marca i{
+  width: 18px; height: 18px; border-radius: 5px;
+  display: grid; place-items: center;
+  background: var(--tinta);
+}
+.dash__marca i svg{ width: 11px; height: 11px; }
+.dash__selo{
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 500; color: var(--texto-2);
+  padding: 4px 8px; border: 1px solid var(--clara-2); border-radius: 999px;
+  background: var(--branco);
+  font-variant-numeric: tabular-nums;
+}
+.dash__selo::before{
+  content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--verde);
+}
+
+.dash__grid{
+  display: grid; gap: 12px;
+  padding: 0 16px;
+  grid-template-columns: 1fr;
+}
+
+.dash-card{
+  border: 1px solid var(--clara-2);
+  border-radius: var(--r-12);
+  background: var(--branco);
+  padding: 14px;
+  min-width: 0;
+}
+.dash-card__topo{
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  margin-bottom: 10px;
+}
+.dash-card__rot{
+  font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--aco);
+}
+.dash-card__vaga{
+  font-family: var(--f-num); font-size: 13px; font-weight: 600; color: var(--tinta);
+  font-variant-numeric: tabular-nums;
+}
+
+/* carro em SVG + cabo + wallbox */
+.carro{
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  height: 92px;
+  border-radius: var(--r-8);
+  background: var(--clara);
+  overflow: hidden;
+}
+.carro svg{ height: 78px; width: auto; color: var(--tinta); }
+.carro__cabo{
+  position: absolute; right: 14px; bottom: 10px; top: 10px;
+  width: 28px;
+}
+.carro__wallbox{
+  position: absolute; right: 12px; top: 18px;
+  width: 16px; height: 24px; border-radius: 4px;
+  border: 1.5px solid var(--tinta);
+  background: var(--branco);
+}
+.carro__wallbox::after{
+  content: ""; position: absolute; inset: 4px 4px auto 4px; height: 3px; border-radius: 2px;
+  background: var(--mostarda);
+}
+.carro__ponto{ position: absolute; left: 50%; top: 50%; }
+
+/* números ao vivo */
+.dash-num{
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 6px; margin-top: 12px;
+}
+.dash-num__item{ min-width: 0; }
+.dash-num__rot{ font-size: 9.5px; font-weight: 500; letter-spacing: .03em; text-transform: uppercase; color: var(--aco); }
+.dash-num__val{
+  display: block; margin-top: 2px;
+  font-family: var(--f-num); font-size: 17px; font-weight: 600; letter-spacing: -.015em;
+  color: var(--tinta); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+
+/* barra de bateria horizontal */
+.barra-bat{
+  position: relative;
+  height: 8px; margin-top: 12px;
+  border-radius: 999px;
+  background: var(--clara-2);
+  overflow: hidden;
+}
+.barra-bat__fill{
+  height: 100%; border-radius: 999px;
+  background: var(--tinta);
+  transition: width .9s var(--e-suave);
+}
+.barra-bat__ponta{
+  position: absolute; top: 50%; width: 4px; height: 12px;
+  border-radius: 2px; background: var(--mostarda);
+  transform: translateY(-50%);
+  transition: left .9s var(--e-suave);
+}
+.barra-bat__legenda{
+  display: flex; justify-content: space-between; gap: 8px;
+  margin-top: 6px;
+  font-size: 10px; color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* segundo carregador */
+.dash-livre{ display: flex; align-items: center; gap: 10px; }
+.dash-livre__ico{
+  flex: none; width: 34px; height: 34px; border-radius: 10px;
+  display: grid; place-items: center;
+  background: var(--clara); color: var(--texto-2);
+}
+.dash-livre__ico svg{ width: 18px; height: 18px; }
+.dash-livre__t{ font-size: 13px; font-weight: 600; color: var(--tinta); }
+.dash-livre__s{ font-size: 11px; color: var(--texto-2); margin-top: 1px; font-variant-numeric: tabular-nums; }
+
+/* tabela custo por apartamento */
+.dash-tabela{ width: 100%; border-collapse: collapse; font-size: 12px; }
+.dash-tabela th{
+  text-align: right; padding: 0 0 6px;
+  font-size: 9.5px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--aco); border-bottom: 1px solid var(--clara-2);
+  white-space: nowrap;
+}
+.dash-tabela th:first-child{ text-align: left; }
+.dash-tabela td{
+  padding: 7px 0; text-align: right;
+  border-bottom: 1px solid var(--clara-2);
+  color: var(--texto-2); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.dash-tabela td:first-child{ text-align: left; font-weight: 600; color: var(--tinta); }
+.dash-tabela tr:last-child td{ border-bottom: 0; }
+.dash-tabela tfoot td{
+  border-bottom: 0; font-weight: 600; color: var(--tinta);
+  border-top: 1px solid var(--aco); padding-top: 8px;
+}
+
+/* gráfico de barras finas kWh/dia */
+.barras{
+  display: flex; align-items: flex-end; gap: 2px;
+  height: 66px;
+  padding-top: 6px;
+}
+.barras__b{
+  flex: 1 1 0; min-width: 2px;
+  border-radius: 1px 1px 0 0;
+  background: var(--dado-2);
+  min-height: 1px;
+}
+.barras__b.is-pico{ background: var(--dado-1); }
+.barras__eixo{
+  display: flex; justify-content: space-between;
+  margin-top: 5px; font-size: 9px; color: var(--texto-3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== modo web largo (desktop) ===== */
+@media (min-width: 900px){
+  .aparelho.is-web{
+    width: 1180px; height: 792px;
+    border-radius: 22px;
+    transform: none !important;
+    margin: 0 !important;
+  }
+  .aparelho.is-web .aparelho__borda{ border-radius: 22px; padding: 8px; }
+  .aparelho.is-web .aparelho__tela{
+    width: 1164px; height: 776px; border-radius: 15px;
+    background: #FFFFFF;
+  }
+  .aparelho.is-web .statusbar,
+  .aparelho.is-web .persona,
+  .aparelho.is-web .tabbar,
+  .aparelho.is-web .homebar{ display: none; }
+  .aparelho.is-web .push{ left: auto; right: 14px; width: 360px; top: 14px; }
+
+  .aparelho.is-web .dash{ display: grid; grid-template-columns: 188px 1fr; height: 100%; padding: 0; }
+
+  .aparelho.is-web .dash__lateral{
+    display: flex !important;
+    flex-direction: column; gap: 2px;
+    padding: 18px 12px;
+    border-right: 1px solid var(--clara-2);
+    background: #FBFCFD;
+  }
+  .aparelho.is-web .dash__cab{ display: none; }
+  .aparelho.is-web .dash__corpo{
+    padding: 16px 20px 20px;
+    overflow-y: auto;
+    min-width: 0;
+  }
+  .aparelho.is-web .dash__nav a{
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 10px; border-radius: 7px;
+    font-size: 12.5px; font-weight: 500; color: var(--texto-2);
+    min-height: 36px;
+  }
+  .aparelho.is-web .dash__nav a.is-ativo{ background: var(--clara); color: var(--tinta); font-weight: 600; }
+  .aparelho.is-web .dash__nav svg{ width: 15px; height: 15px; flex: none; }
+  .aparelho.is-web .dash__nav-rot{
+    padding: 4px 10px 6px;
+    font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--aco);
+  }
+
+  .aparelho.is-web .dash__topo{
+    display: flex !important; align-items: baseline; justify-content: space-between; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .aparelho.is-web .dash__titulo{
+    font-family: var(--f-num); font-size: 19px; font-weight: 600; letter-spacing: -.025em; color: var(--tinta);
+  }
+  .aparelho.is-web .dash__topo .dash__selo{ font-size: 10px; }
+
+  .aparelho.is-web .dash__grid{
+    grid-template-columns: repeat(12,1fr);
+    gap: 14px; padding: 0;
+  }
+  .aparelho.is-web .dash-card{ padding: 16px; }
+  .aparelho.is-web .dash-card--recarga{ grid-column: span 5; }
+  .aparelho.is-web .dash-card--livre{ grid-column: span 3; }
+  .aparelho.is-web .dash-card--tabela{ grid-column: span 7; }
+  .aparelho.is-web .dash-card--grafico{ grid-column: span 5; }
+  .aparelho.is-web .carro{ height: 118px; }
+  .aparelho.is-web .carro svg{ height: 100px; }
+  .aparelho.is-web .dash-num__val{ font-size: 19px; }
+  .aparelho.is-web .barras{ height: 96px; }
+  .aparelho.is-web .dash-tabela{ font-size: 12.5px; }
+  .aparelho.is-web .dash-tabela td{ padding: 8px 0; }
+}
+
+/* no celular a lateral do dashboard não existe */
+.dash__lateral, .dash__topo{ display: none; }
+
+/* ============================================================
+   estados vazios e utilidades
+   ============================================================ */
+
+.vazio{
+  padding: 40px 20px 24px;
+  text-align: center;
+}
+.vazio__ico{
+  width: 46px; height: 46px; margin: 0 auto 12px;
+  border-radius: 50%; display: grid; place-items: center;
+  background: var(--clara); color: var(--aco);
+}
+.vazio__ico svg{ width: 22px; height: 22px; }
+.vazio__t{ font-size: 15px; font-weight: 600; color: var(--tinta); }
+.vazio__s{ margin-top: 4px; font-size: 12px; color: var(--texto-2); }
+
+.sr{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.oculto{ display: none !important; }
+
+@media (prefers-reduced-motion: reduce){
+  .status__ponto::after{ animation: none; }
+}
+
+

@@ -1,0 +1,134 @@
+/* ============================================================
+   Volarity · base — tokens de MARCA.md / DESIGN.md §1–3
+   ============================================================ */
+
+:root{
+  /* base — MARCA.md, não alterar */
+  --tinta:    #2B2D42;
+  --aco:      #8D99AE;
+  --clara:    #EDF2F4;
+  --mostarda: #D7951B;
+  --verde:    #3B481C;
+
+  /* derivados do mesmo sistema */
+  --branco:   #FFFFFF;
+  --clara-2:  #E1E8EB;
+  --tinta-2:  #34374F;
+  --tinta-3:  #3F4259;
+
+  /* texto */
+  --texto:    #2B2D42;
+  --texto-2:  #6D788D;
+  --texto-3:  #9AA4B6;
+  --texto-inv:   #EDF2F4;
+  --texto-inv-2: #8D99AE;
+  --borda:       #DCE3E7;
+  --borda-esc:   rgba(141,153,174,.22);
+
+  /* dados */
+  --dado-1: #8D99AE;
+  --dado-2: #B9C2D0;
+  --dado-realce: #2B2D42;
+
+  /* tipografia — ADENDO 2: escala de contraste extremo */
+  --display: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --texto-f: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --t-hero:  clamp(72px, 12vw, 160px);
+  --t-giant: clamp(96px, 16vw, 200px);
+  --t-h2:    clamp(48px, 8vw, 104px);
+  --t-h3:    clamp(30px, 3.2vw, 40px);
+  --t-body:  17px;
+  --t-lead:  clamp(17px, 1.35vw, 20px);
+  --t-micro: 12px;
+
+  /* dentro do app */
+  --t-app:      15px;
+  --t-app-mini: 10px;
+  --t-app-num:  40px;
+
+  /* espaço/forma */
+  --gut: 20px;
+  --sec-y: clamp(80px, 11vw, 150px);
+  --r-fio: 4px;
+  --r-chip: 8px;
+  --r-cartao: 12px;
+  --r-grande: 20px;
+  --r-tabela: 28px;
+
+  --sombra-cartao: 0 1px 2px rgba(43,45,66,.06), 0 8px 24px -12px rgba(43,45,66,.14);
+  --sombra-phone-claro: 0 2px 4px rgba(43,45,66,.08), 0 40px 80px -36px rgba(43,45,66,.38);
+  --sombra-phone-escuro: 0 2px 4px rgba(0,0,0,.30), 0 50px 100px -40px rgba(0,0,0,.65);
+
+  /* motion */
+  --e-saida: cubic-bezier(.22,.61,.36,1);
+  --e-suave: cubic-bezier(.33,1,.68,1);
+  --e-ios:   cubic-bezier(.32,.72,0,1);
+}
+
+/* ---------- reset ---------- */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0;
+  background:var(--tinta);
+  color:var(--texto);
+  font-family:var(--texto-f);
+  font-size:var(--t-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+h1,h2,h3,p,figure,ul,ol{ margin:0; }
+ul,ol{ padding:0; list-style:none; }
+img,svg{ display:block; max-width:100%; }
+a{ color:inherit; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+table{ border-collapse:collapse; width:100%; }
+
+:focus-visible{
+  outline:2px solid var(--tinta);
+  outline-offset:3px;
+  border-radius:2px;
+}
+.escuro :focus-visible,
+.secao--tinta :focus-visible{ outline-color:var(--clara); }
+
+/* ---------- utilitários ---------- */
+.container{
+  width:100%;
+  max-width:1200px;
+  margin-inline:auto;
+  padding-inline:var(--gut);
+}
+@media (min-width:768px){ .container{ padding-inline:32px; } }
+
+.pular{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--clara); color:var(--tinta);
+  padding:12px 18px; border-radius:var(--r-chip);
+  font-size:14px; font-weight:600;
+}
+.pular:focus{ left:16px; top:16px; }
+
+.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+.rotulo{
+  font-family:var(--texto-f);
+  font-size:var(--t-micro);
+  font-weight:500;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  line-height:1.2;
+}
+
+/* grão de filme — só em seção escura */
+.grao{
+  position:absolute; inset:0; z-index:0;
+  pointer-events:none;
+  opacity:.03;
+  mix-blend-mode:soft-light;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* estado inicial das animações é definido por JS (gsap.set) — sem JS, tudo visível */

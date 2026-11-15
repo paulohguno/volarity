@@ -1,0 +1,130 @@
+/* ============================================================
+   Volarity · relatório do síndico, escala do notebook, ajustes
+   ============================================================ */
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ---------- escala do notebook ---------- */
+.secao__produto{ position:relative; }
+.secao__produto .notebook{
+  position:absolute; top:0; left:0;
+  transform-origin:top left;
+}
+/* sem JS: notebook no fluxo, contido na coluna */
+html:not(.js) .secao__produto{ overflow:hidden; }
+html:not(.js) .secao__produto .notebook{ position:static; width:100%; }
+@media (max-width:1023px){
+  .hero__palco .notebook{ transform:translate(-52%,-50%) scale(.62); }
+}
+
+/* ---------- relatório ---------- */
+.relatorio{
+  margin-top:clamp(44px,6vw,72px);
+  background:var(--branco);
+  border:1px solid var(--borda);
+  border-radius:var(--r-tabela);
+  padding:clamp(16px,2.4vw,26px) 0 clamp(14px,2vw,20px);
+  box-shadow:var(--sombra-cartao);
+  overflow:hidden;
+}
+.relatorio__topo{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; flex-wrap:wrap;
+  padding:0 clamp(16px,2.4vw,26px) 14px;
+}
+.relatorio__titulo{ font-size:15px; font-weight:600; letter-spacing:-.015em; }
+.relatorio__chip{
+  font-size:11px; font-weight:500; color:var(--texto-2);
+  border:1px solid var(--borda); border-radius:999px; padding:4px 10px;
+  white-space:nowrap;
+}
+.relatorio__rolagem{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  padding:0 clamp(16px,2.4vw,26px);
+}
+.tabela{
+  width:100%; min-width:420px;
+  font-size:15px;
+  font-variant-numeric:tabular-nums;
+}
+.tabela thead th{
+  background:var(--clara);
+  font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--texto-2);
+  text-align:right;
+  padding:10px 14px;
+  position:sticky; top:0;
+}
+.tabela thead th:first-child{ text-align:left; border-radius:8px 0 0 8px; }
+.tabela thead th:last-child{ border-radius:0 8px 8px 0; }
+.tabela tbody th{
+  text-align:left; font-weight:500; color:var(--texto);
+  padding:0 14px; height:46px;
+  border-top:1px solid var(--borda);
+}
+.tabela tbody td{
+  text-align:right; padding:0 14px; height:46px;
+  border-top:1px solid var(--borda);
+  color:var(--texto);
+}
+.tabela tbody td:last-child{ font-weight:600; }
+.tabela .linha-taxa th,
+.tabela .linha-taxa td{ color:var(--texto-2); font-weight:500; }
+.tabela tfoot th{
+  text-align:left; font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+  font-weight:600; color:var(--texto-2);
+  padding:0 14px; height:52px;
+  border-top:1px solid var(--texto);
+}
+.tabela tfoot td{
+  text-align:right; padding:0 14px; height:52px;
+  border-top:1px solid var(--texto);
+  font-weight:600;
+}
+.relatorio__nota{
+  padding:14px clamp(16px,2.4vw,26px) 0;
+  font-size:var(--t-micro); color:var(--texto-2);
+  font-variant-numeric:tabular-nums;
+}
+.relatorio__fonte{
+  padding:4px clamp(16px,2.4vw,26px) 0;
+  font-size:var(--t-micro); color:var(--texto-2);
+}
+
+/* ---------- ajustes de celular ---------- */
+@media (max-width:899px){
+  :root{ --gut:20px; }
+  .hero{ padding-block:104px 56px; }
+  .hero__grade{ gap:36px; }
+  .hero__palco{ margin-block:6px 0; }
+  .prova__gastos{ margin-top:56px; }
+  .rodape .container{ flex-direction:column; align-items:flex-start; gap:14px; }
+}
+
+/* escalas do iPhone */
+.phone{ --escala:.6; }
+@media (min-width:420px){ .phone{ --escala:.66; } }
+@media (min-width:600px){ .phone{ --escala:.78; } }
+@media (min-width:1024px){ .phone{ --escala:.86; } .hero .phone{ --escala:.8; } }
+@media (min-width:1440px){ .hero .phone{ --escala:.88; } }
+
+/* h1 sem quebrar feio em telas estreitas */
+@media (max-width:420px){
+  h1{ font-size:clamp(64px,17vw,72px); }
+  h2{ font-size:clamp(44px,12vw,52px); }
+  .numero{ font-size:clamp(84px,22vw,104px); }
+}
+
+/* números de prova em duas linhas no celular */
+.numero { letter-spacing:-.045em; }
+.numero--faixa{ font-size:clamp(64px,13.5vw,148px); }
+@media (min-width:900px){ .numero--faixa{ font-size:clamp(80px,7vw,132px); } }
+
+/* hover suave nos cartões do funil (nada chamativo) */
+.vaga, .modulo, .funil__no{ transition:border-color .2s var(--e-saida); }
+.vaga:hover, .modulo:hover, .funil__no:hover{ border-color:var(--aco); }

@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Volarity — cada recarga tem dono</title>
+  <meta name="description" content="Volarity mede a energia de cada carro elétrico no condomínio e cobra de quem carregou. App do morador e relatório por apartamento para o síndico.">
+  <meta name="theme-color" content="#2B2D42">
+  <meta name="color-scheme" content="dark light">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Volarity — cada recarga tem dono">
+  <meta property="og:description" content="Mede a energia de cada carro elétrico no condomínio e cobra de quem carregou.">
+  <meta property="og:image" content="assets/hero.jpg">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232B2D42'/%3E%3Cpath d='M18 20h8l6 18 6-18h8L36 46h-8z' fill='%23EDF2F4'/%3E%3Ccircle cx='46' cy='44' r='4' fill='%23D7951B'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/secoes.css">
+  <link rel="stylesheet" href="css/phone.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/relatorio.css">
+  <link rel="stylesheet" href="css/ajustes.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- sprite de ícones: traço 1.5, 24×24 -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <symbol id="i-casa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H4z"/><path d="M9.5 20v-5.5h5V20"/></symbol>
+    <symbol id="i-fila" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 7h16M4 12h11M4 17h7"/><circle cx="18.5" cy="16.5" r="2"/></symbol>
+    <symbol id="i-gastos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M14.5 9.2c-.6-.7-1.5-1.1-2.5-1.1-1.4 0-2.4.7-2.4 1.8 0 2.6 5 1.4 5 4 0 1.1-1 1.9-2.6 1.9-1.1 0-2-.4-2.6-1.1M12 6.6v10.8"/></symbol>
+    <symbol id="i-avisos" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 10a5.5 5.5 0 0 1 11 0c0 4 1.5 5.5 1.5 5.5H5S6.5 14 6.5 10Z"/><path d="M10 19a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-seta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6.5 18.5 12 13 17.5"/></symbol>
+    <symbol id="i-rfid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M7 10h4M7 14h2"/><path d="M15.5 9.5a3.5 3.5 0 0 1 0 5M18 8a6.5 6.5 0 0 1 0 8"/></symbol>
+    <symbol id="i-carregador" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M10 8h4M10 12h4"/><path d="M12 15v3"/></symbol>
+    <symbol id="i-medidor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 9h4M7 13h2M15 9v6M13 12h4"/></symbol>
+    <symbol id="i-pi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="8.5" y="8.5" width="7" height="7" rx="1"/><path d="M4 9h-2M4 15h-2M22 9h-2M22 15h-2M9 4V2M15 4V2M9 22v-2M15 22v-2"/></symbol>
+    <symbol id="i-banco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"/><path d="M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/></symbol>
+    <symbol id="i-notebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="1.5"/><path d="M2 19h20"/></symbol>
+    <symbol id="i-celular" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 5.5h3"/></symbol>
+    <symbol id="i-cobranca" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+    <symbol id="i-cadastro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M18 8v6M15 11h6"/></symbol>
+    <symbol id="i-consumo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  </svg>
+
+  <header class="cabecalho" id="cabecalho" data-visivel="false">
+    <div class="container">
+      <a class="marca" href="#hero">Volarity</a>
+      <a class="cabecalho__link" href="painel/">Abrir o painel ao vivo</a>
+    </div>
+  </header>
+
+  <main id="conteudo">
+
+    <!-- ============ 1 · HERO ============ -->
+    <section class="secao secao--tinta hero" id="hero">
+      <div class="grao" aria-hidden="true"></div>
+      <div class="container">
+        <div class="hero__grade">
+          <div class="hero__texto">
+            <p class="rotulo rotulo-secao anim" data-anim="eyebrow">VOLARITY · GESTÃO ENERGÉTICA</p>
+            <h1 class="anim" data-anim="titulo">Cada recarga<br>tem <span class="mostarda">dono</span>.</h1>
+            <div class="acoes anim" data-anim="cta">
+              <a class="botao" href="painel/">
+                Ver o painel ao vivo
+                <svg width="18" height="18" aria-hidden="true"><use href="#i-seta"/></svg>
+              </a>
+              <a class="link-sublinhado" href="#sindico">Como funciona</a>
+            </div>
+          </div>
+
+          <div class="hero__palco anim" data-anim="phone">
+            <!-- notebook atrás (desktop) -->
+            <div class="notebook" aria-hidden="true">
+              <div class="notebook__tampa">
+                <div class="notebook__tela" data-dash-mini></div>
+              </div>
+              <div class="notebook__base"></div>
+            </div>
+
+            <!-- iPhone: tela Início -->
+            <div class="phone phone--hero" role="img" aria-label="App Volarity — recarga ao vivo, 64%, Vaga 14, Apto 302">
+              <div class="phone__frame">
+                <div class="phone__tela">
+                  <div class="isl" aria-hidden="true"></div>
+                  <div class="statusbar" aria-hidden="true">
+                    <span class="num">23:14</span>
+                    <span class="statusbar__icons">
+                      <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                      <svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.2 5.6 8.6a3.4 3.4 0 0 1 4.8 0zM8 6.2a6 6 0 0 0-4.2 1.7L2.4 6.5a8 8 0 0 1 11.2 0l-1.4 1.4A6 6 0 0 0 8 6.2zM8 1.6a10.4 10.4 0 0 0-7.3 3L0 3.2a12.4 12.4 0 0 1 16 0l-.7 1.4A10.4 10.4 0 0 0 8 1.6z"/></svg>
+                      <svg viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.6" fill="currentColor"/><path d="M24 4.2v3.6a2 2 0 0 0 0-3.6z" fill="currentColor" opacity=".45"/></svg>
+                    </span>
+                  </div>
+
+                  <div class="app-tela">
+                    <div class="app-topo">
+                      <span>Bosque das Palmeiras · Vaga 14</span>
+                      <strong>Apto 302</strong>
+                    </div>
+
+                    <div class="card-recarga">
+                      <span class="status-carga"><i class="ponto"></i>Carregando</span>
+
+                      <div class="anel">
+                        <svg viewBox="0 0 180 180" aria-hidden="true">
+                          <circle class="anel__trilho" cx="90" cy="90" r="82"/>
+                          <circle class="anel__arco" cx="90" cy="90" r="82" data-arco="64"/>
+                        </svg>
+                        <div class="anel__centro">
+                          <span class="pct num" data-pct>64<small>%</small></span>
+                        </div>
+                      </div>
+
+                      <div class="dados">
+                        <div class="dados__col"><span class="dados__rot">Potência</span><span class="dados__val num">7,2 kW</span></div>
+                        <div class="dados__col"><span class="dados__rot">Energia</span><span class="dados__val num">25,6 kWh</span></div>
+                        <div class="dados__col"><span class="dados__rot">Custo</span><span class="dados__val num">R$ 23,59</span></div>
+                      </div>
+
+                      <div class="card-pe">
+                        <span>faltam <strong>1 h 20</strong> · até 100%</span>
+                        <span>Vaga 14 · Apto 302</span>
+                      </div>
+                    </div>
+
+                    <div class="carro-app">
+                      <svg class="carro-svg" viewBox="0 0 300 92" aria-hidden="true"><line class="chao" x1="0" y1="85" x2="300" y2="85"/><rect class="wb" x="6" y="18" width="28" height="48" rx="6"/><rect class="wb-tela" x="11.5" y="25" width="17" height="10" rx="2"/><circle class="led" cx="20" cy="46" r="3"/><path class="cabo" d="M20 66 C20 80 44 80 62 72 C74 66 82 60 86 54"/><g transform="translate(60 0)"><path class="corpo" d="M14 64 C14 56 16 50 22 47 L40 42 C52 30 66 24 84 22 L150 21 C166 21 178 28 190 38 L214 44 C224 46 230 52 230 60 L230 64 C230 66 228 68 226 68 L205 68 A20 20 0 0 0 165 68 L77 68 A20 20 0 0 0 37 68 L18 68 C16 68 14 66 14 64 Z"/><path class="vidro" d="M50 42 C60 32 70 27 86 26 L117 26 L117 42 Z"/><path class="vidro" d="M123 26 L148 26 C160 26 170 31 181 41 L123 42 Z"/><path class="friso" d="M120 46 V64 M30 54 H220"/><path class="farol" d="M215 48 L226 51"/><circle class="porta" cx="26" cy="53" r="2.6"/><circle class="roda" cx="57" cy="68" r="15"/><circle class="aro" cx="57" cy="68" r="8.5"/><circle class="roda" cx="185" cy="68" r="15"/><circle class="aro" cx="185" cy="68" r="8.5"/></g></svg>
+                      <div class="carro-app__legenda"><span>Hatch elétrico · MKZ-4B21</span><span>Cartão RFID 04A1·7F</span></div>
+                    </div>
+
+                    <div class="botao-app">Pausar recarga</div>
+                  </div>
+
+                  <nav class="tabbar" aria-hidden="true">
+                    <span class="tabbar__item" aria-selected="true"><svg><use href="#i-casa"/></svg>Início</span>
+                    <span class="tabbar__item"><svg><use href="#i-fila"/></svg>Fila</span>
+                    <span class="tabbar__item"><svg><use href="#i-gastos"/></svg>Gastos</span>
+                    <span class="tabbar__item"><svg><use href="#i-avisos"/></svg>Avisos</span>
+                  </nav>
+                  <div class="homebar" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2 · MORADOR ============ -->
+    <section class="secao secao--clara" id="morador">
+      <div class="container">
+        <div class="secao__grade">
+          <div class="secao__texto">
+            <p class="rotulo rotulo-secao anim" data-anim="eyebrow">MORADOR</p>
+            <h2 class="anim" data-anim="titulo">Seu carro<br>avisa você.</h2>
+          </div>
+
+          <div class="secao__produto anim" data-anim="phone">
+            <div class="phone" role="img" aria-label="App Volarity — tela de bloqueio com três avisos: carregando 64%, carga concluída 38,6 kWh e R$ 35,56, e sua vez no carregador da Vaga 14">
+              <div class="phone__frame">
+                <div class="phone__tela tela-bloqueio">
+                  <div class="isl" aria-hidden="true"></div>
+                  <div class="statusbar statusbar--clara" aria-hidden="true">
+                    <span class="num">23:14</span>
+                    <span class="statusbar__icons">
+                      <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                      <svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.2 5.6 8.6a3.4 3.4 0 0 1 4.8 0zM8 6.2a6 6 0 0 0-4.2 1.7L2.4 6.5a8 8 0 0 1 11.2 0l-1.4 1.4A6 6 0 0 0 8 6.2zM8 1.6a10.4 10.4 0 0 0-7.3 3L0 3.2a12.4 12.4 0 0 1 16 0l-.7 1.4A10.4 10.4 0 0 0 8 1.6z"/></svg>
+                      <svg viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.6" fill="currentColor"/><path d="M24 4.2v3.6a2 2 0 0 0 0-3.6z" fill="currentColor" opacity=".45"/></svg>
+                    </span>
+                  </div>
+
+                  <div class="app-tela">
+                    <div class="bloqueio__hora">
+                      <b class="num">23:14</b>
+                      <span>segunda-feira, 2 de novembro</span>
+                    </div>
+
+                    <div class="push push--frente" data-push>
+                      <div class="push__icone" aria-hidden="true">V</div>
+                      <div>
+                        <div class="push__topo"><b>Volarity</b><span>agora</span></div>
+                        <div class="push__titulo">Carregando</div>
+                        <div class="push__corpo">64% · faltam 1 h 20</div>
+                      </div>
+                    </div>
+
+                    <div class="push push--meio" data-push>
+                      <div class="push__icone" aria-hidden="true">V</div>
+                      <div>
+                        <div class="push__topo"><b>Volarity</b><span>12/10</span></div>
+                        <div class="push__titulo push--fim">Carga concluída</div>
+                        <div class="push__corpo">38,6 kWh · R$ 35,56</div>
+                      </div>
+                    </div>
+
+                    <div class="push push--tras" data-push>
+                      <div class="push__icone" aria-hidden="true">V</div>
+                      <div>
+                        <div class="push__topo"><b>Volarity</b><span>14/10</span></div>
+                        <div class="push__titulo">Sua vez</div>
+                        <div class="push__corpo">Carregador da Vaga 14 livre</div>
+                      </div>
+                    </div>
+                    <div class="bloqueio__acoes" aria-hidden="true">
+                      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1 5H9z"/><path d="M9 8v11a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V8"/><path d="M12 12v3"/></svg></span>
+                      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+                    </div>
+                  </div>
+
+                  <div class="homebar" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · FILA ============ -->
+    <section class="secao secao--tinta" id="fila">
+      <div class="grao" aria-hidden="true"></div>
+      <div class="container">
+        <div class="secao__grade secao__grade--invertida">
+          <div class="secao__texto">
+            <p class="rotulo rotulo-secao anim" data-anim="eyebrow">FILA</p>
+            <h2 class="anim" data-anim="titulo">Sua vez,<br>sem discussão.</h2>
+          </div>
+
+          <div class="secao__produto anim" data-anim="phone">
+            <div class="phone" role="img" aria-label="App Volarity — fila do carregador: você é o 2º, previsão 00:52">
+              <div class="phone__frame">
+                <div class="phone__tela">
+                  <div class="isl" aria-hidden="true"></div>
+                  <div class="statusbar" aria-hidden="true">
+                    <span class="num">22:41</span>
+                    <span class="statusbar__icons">
+                      <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                      <svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.2 5.6 8.6a3.4 3.4 0 0 1 4.8 0zM8 6.2a6 6 0 0 0-4.2 1.7L2.4 6.5a8 8 0 0 1 11.2 0l-1.4 1.4A6 6 0 0 0 8 6.2zM8 1.6a10.4 10.4 0 0 0-7.3 3L0 3.2a12.4 12.4 0 0 1 16 0l-.7 1.4A10.4 10.4 0 0 0 8 1.6z"/></svg>
+                      <svg viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.6" fill="currentColor"/><path d="M24 4.2v3.6a2 2 0 0 0 0-3.6z" fill="currentColor" opacity=".45"/></svg>
+                    </span>
+                  </div>
+
+                  <div class="app-tela">
+                    <div class="fila__cabecalho">
+                      <h3>Carregador compartilhado · 1 ponto</h3>
+                      <p>Entrou na fila às 22:40</p>
+                    </div>
+
+                    <ul class="lista-fila">
+                      <li class="linha-fila linha-fila--agora" data-fila-linha>
+                        <span class="avatar" aria-hidden="true">1104</span>
+                        <span class="linha-fila__txt"><span class="linha-fila__nome">Apto 1104</span><span class="linha-fila__sub">Carregando · 41%</span></span>
+                        <span class="linha-fila__hora">Agora</span>
+                      </li>
+                      <li class="linha-fila linha-fila--eu" data-fila-linha data-fila-eu>
+                        <span class="avatar" aria-hidden="true">302</span>
+                        <span class="linha-fila__txt"><span class="linha-fila__nome">Você · 2º</span><span class="linha-fila__sub">Apto 302 · 64%</span></span>
+                        <span class="linha-fila__hora">00:52</span>
+                      </li>
+                      <li class="linha-fila" data-fila-linha>
+                        <span class="avatar" aria-hidden="true">507</span>
+                        <span class="linha-fila__txt"><span class="linha-fila__nome">3º</span><span class="linha-fila__sub">Apto 507 · 22%</span></span>
+                        <span class="linha-fila__hora">02:30</span>
+                      </li>
+                      <li class="linha-fila" data-fila-linha>
+                        <span class="avatar" aria-hidden="true">901</span>
+                        <span class="linha-fila__txt"><span class="linha-fila__nome">4º</span><span class="linha-fila__sub">Apto 901 · 18%</span></span>
+                        <span class="linha-fila__hora">04:08</span>
+                      </li>
+                    </ul>
+
+                    <div class="fila__pe">
+                      <p>Previsão: sua vez às <b>00:52</b></p>
+                      <div class="botao-app botao-app--tinta">Sair da fila</div>
+                    </div>
+                  </div>
+
+                  <nav class="tabbar" aria-hidden="true">
+                    <span class="tabbar__item"><svg><use href="#i-casa"/></svg>Início</span>
+                    <span class="tabbar__item" aria-selected="true"><svg><use href="#i-fila"/></svg>Fila</span>
+                    <span class="tabbar__item"><svg><use href="#i-gastos"/></svg>Gastos</span>
+                    <span class="tabbar__item"><svg><use href="#i-avisos"/></svg>Avisos</span>
+                  </nav>
+                  <div class="homebar" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · SÍNDICO ============ -->
+    <section class="secao secao--branco" id="sindico">
+      <div class="container">
+
+        <div class="secao__grade secao__grade--largo">
+          <div class="secao__texto">
+            <p class="rotulo rotulo-secao anim" data-anim="eyebrow">SÍNDICO</p>
+            <h2 class="anim" data-anim="titulo">A conta não<br>é mais dividida.</h2>
+          </div>
+
+          <div class="secao__produto anim" data-anim="notebook">
+            <div class="phone phone--sindico" role="img" aria-label="App Volarity, modo síndico: Vaga 14 carregando a 7,2 kW, 64%, R$ 23,59; Vaga 09 livre; custo por apartamento em outubro">
+              <div class="phone__frame">
+                <div class="phone__tela">
+                  <div class="isl" aria-hidden="true"></div>
+                  <div class="statusbar" aria-hidden="true">
+                    <span class="num">08:12</span>
+                    <span class="statusbar__icons">
+                      <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                      <svg viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.6" fill="currentColor"/></svg>
+                    </span>
+                  </div>
+                  <div class="app-tela sind">
+                    <div class="sind__topo">
+                      <div><span class="sind__modo">Síndico</span><h3>Painel · outubro</h3><p>Bosque das Palmeiras · 2 carregadores</p></div>
+                      <span class="sind__chip"><i></i>Medidor 14</span>
+                    </div>
+
+                    <div class="sind-card">
+                      <div class="sind-card__rot"><span>Vaga 14 · carregando</span><em>Apto 302</em></div>
+                      <svg class="carro-svg" viewBox="0 0 300 92" aria-hidden="true"><line class="chao" x1="0" y1="85" x2="300" y2="85"/><rect class="wb" x="6" y="18" width="28" height="48" rx="6"/><rect class="wb-tela" x="11.5" y="25" width="17" height="10" rx="2"/><circle class="led" cx="20" cy="46" r="3"/><path class="cabo" d="M20 66 C20 80 44 80 62 72 C74 66 82 60 86 54"/><g transform="translate(60 0)"><path class="corpo" d="M14 64 C14 56 16 50 22 47 L40 42 C52 30 66 24 84 22 L150 21 C166 21 178 28 190 38 L214 44 C224 46 230 52 230 60 L230 64 C230 66 228 68 226 68 L205 68 A20 20 0 0 0 165 68 L77 68 A20 20 0 0 0 37 68 L18 68 C16 68 14 66 14 64 Z"/><path class="vidro" d="M50 42 C60 32 70 27 86 26 L117 26 L117 42 Z"/><path class="vidro" d="M123 26 L148 26 C160 26 170 31 181 41 L123 42 Z"/><path class="friso" d="M120 46 V64 M30 54 H220"/><path class="farol" d="M215 48 L226 51"/><circle class="porta" cx="26" cy="53" r="2.6"/><circle class="roda" cx="57" cy="68" r="15"/><circle class="aro" cx="57" cy="68" r="8.5"/><circle class="roda" cx="185" cy="68" r="15"/><circle class="aro" cx="185" cy="68" r="8.5"/></g></svg>
+                      <div class="sind-bat"><i></i></div>
+                      <div class="sind-bat__leg"><span>18%</span><span>64%</span><span>100%</span></div>
+                      <div class="sind-dados">
+                        <div><span>Potência</span><b class="num">7,2 kW</b></div>
+                        <div><span>Custo</span><b class="num">R$ 23,59</b></div>
+                        <div><span>Restante</span><b class="num">1 h 20</b></div>
+                      </div>
+                    </div>
+
+                    <div class="sind-linha">
+                      <span class="sind-linha__ponto"></span>
+                      <span class="sind-linha__txt"><b>Vaga 09 · livre</b><small>Próximo: Apto 1104 · 00:05</small></span>
+                    </div>
+
+                    <div class="sind-card sind-card--lista">
+                      <div class="sind-card__rot"><span>Custo por apto</span><em>R$ 128,98</em></div>
+                      <div class="sind-apto"><b>302</b><span class="num">103,0 kWh</span><strong class="num">R$ 94,89</strong></div>
+                      <div class="sind-apto"><b>401</b><span class="num">16,8 kWh</span><strong class="num">R$ 15,48</strong></div>
+                      <div class="sind-apto"><b>502</b><span class="num">11,9 kWh</span><strong class="num">R$ 10,96</strong></div>
+                      <div class="sind-mini" aria-hidden="true"><i style="height:38%"></i><i style="height:62%"></i><i style="height:25%"></i><i style="height:75%"></i><i style="height:50%"></i><i style="height:88%"></i><i style="height:38%"></i><i style="height:62%"></i><i style="height:100%"></i><i style="height:50%"></i><i style="height:75%"></i><i style="height:38%"></i><i style="height:62%"></i><i style="height:88%"></i><i style="height:50%"></i><i style="height:75%"></i><i style="height:25%"></i><i style="height:62%"></i><i style="height:88%"></i><i style="height:50%"></i><i style="height:75%"></i><i style="height:38%"></i><i style="height:62%"></i><i style="height:100%"></i><i style="height:50%"></i><i style="height:75%"></i><i style="height:38%"></i><i style="height:62%"></i><i style="height:50%"></i><i style="height:75%"></i></div>
+                    </div>
+                  </div>
+
+                  <nav class="tabbar" aria-hidden="true">
+                    <span class="tabbar__item" aria-selected="true"><svg><use href="#i-casa"/></svg>Painel</span>
+                    <span class="tabbar__item"><svg><use href="#i-carregador"/></svg>Recargas</span>
+                    <span class="tabbar__item"><svg><use href="#i-cadastro"/></svg>Aptos</span>
+                    <span class="tabbar__item"><svg><use href="#i-cobranca"/></svg>Relatórios</span>
+                  </nav>
+                  <div class="homebar" aria-hidden="true"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <figure class="relatorio anim" data-anim="tabela">
+          <figcaption class="relatorio__topo">
+            <span class="relatorio__titulo">Custo por apartamento · outubro</span>
+            <span class="relatorio__chip num">R$ 0,9213/kWh</span>
+          </figcaption>
+
+          <div class="relatorio__rolagem">
+            <table class="tabela">
+              <caption class="sr-only">Custo de energia por apartamento em outubro, tarifa R$ 0,9213 por kWh</caption>
+              <thead>
+                <tr><th scope="col">Apto</th><th scope="col">Recargas</th><th scope="col">kWh</th><th scope="col">R$</th></tr>
+              </thead>
+              <tbody>
+                <tr data-tabela-linha><th scope="row">302</th><td>4</td><td class="num">103,0</td><td class="num" data-rs="94.89">94,89</td></tr>
+                <tr data-tabela-linha><th scope="row">401</th><td>2</td><td class="num">16,8</td><td class="num" data-rs="15.48">15,48</td></tr>
+                <tr data-tabela-linha><th scope="row">502</th><td>2</td><td class="num">11,9</td><td class="num" data-rs="10.96">10,96</td></tr>
+                <tr data-tabela-linha><th scope="row">703</th><td>1</td><td class="num">4,2</td><td class="num" data-rs="3.87">3,87</td></tr>
+                <tr data-tabela-linha><th scope="row">901</th><td>1</td><td class="num">4,1</td><td class="num" data-rs="3.78">3,78</td></tr>
+              </tbody>
+              <tfoot>
+                <tr><th scope="row">Total</th><td>10</td><td class="num">140,0</td><td class="num">128,98</td></tr>
+              </tfoot>
+            </table>
+          </div>
+        </figure>
+
+        <!-- faixa "Como funciona": 3 passos -->
+        <div class="funil fluxo" aria-labelledby="funil-titulo">
+          <p class="funil__grupo" id="funil-titulo">Como funciona</p>
+          <ol class="fluxo__passos">
+            <li class="passo anim" data-anim="no">
+              <span class="passo__num">01</span>
+              <span class="passo__icones"><svg><use href="#i-carregador"/></svg><svg><use href="#i-rfid"/></svg></span>
+              <b>Ponto de carregamento</b>
+            </li>
+            <li class="fluxo__seta" aria-hidden="true"><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6 H96" data-funil-linha/><path class="ponta" d="M90 1 L97 6 L90 11"/><circle cx="2" cy="6" r="3" data-funil-pulso/></svg></li>
+            <li class="passo anim" data-anim="no">
+              <span class="passo__num">02</span>
+              <span class="passo__icones"><svg><use href="#i-banco"/></svg></span>
+              <b>Banco de dados</b>
+            </li>
+            <li class="fluxo__seta" aria-hidden="true"><svg viewBox="0 0 100 12" preserveAspectRatio="none"><path d="M0 6 H96" data-funil-linha/><path class="ponta" d="M90 1 L97 6 L90 11"/><circle cx="2" cy="6" r="3" data-funil-pulso/></svg></li>
+            <li class="passo anim" data-anim="no">
+              <span class="passo__num">03</span>
+              <span class="passo__icones"><svg><use href="#i-notebook"/></svg><svg><use href="#i-celular"/></svg></span>
+              <b>Website / App</b>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5 · PROVA + RODAPÉ ============ -->
+    <section class="secao secao--tinta prova" id="prova">
+      <div class="grao" aria-hidden="true"></div>
+      <div class="container">
+        <ul class="prova__numeros">
+          <li class="anim" data-anim="numero">
+            <span class="numero num" data-numero="585">585</span><span class="numero__un">carros elétricos<br>em Chapecó</span>
+          </li>
+          <li class="anim" data-anim="numero">
+            <span class="numero num">R$&nbsp;<span class="mostarda">143</span></span><span class="numero__un">por carro,<br>todo mês</span>
+          </li>
+        </ul>
+
+        <p class="prova__fecho anim" data-anim="fecho">Hoje, quem paga é o condomínio.</p>
+
+        <div class="prova__gastos anim" data-anim="phone">
+          <div class="phone" role="img" aria-label="App Volarity — Gastos: R$ 94,89 em outubro, 103,0 kWh, no eletroposto seria R$ 306,60">
+            <div class="phone__frame">
+              <div class="phone__tela">
+                <div class="isl" aria-hidden="true"></div>
+                <div class="statusbar" aria-hidden="true">
+                  <span class="num">23:20</span>
+                  <span class="statusbar__icons">
+                    <svg viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+                    <svg viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.2 5.6 8.6a3.4 3.4 0 0 1 4.8 0zM8 6.2a6 6 0 0 0-4.2 1.7L2.4 6.5a8 8 0 0 1 11.2 0l-1.4 1.4A6 6 0 0 0 8 6.2zM8 1.6a10.4 10.4 0 0 0-7.3 3L0 3.2a12.4 12.4 0 0 1 16 0l-.7 1.4A10.4 10.4 0 0 0 8 1.6z"/></svg>
+                    <svg viewBox="0 0 26 12" fill="none"><rect x=".5" y=".5" width="22" height="11" rx="3" stroke="currentColor" opacity=".45"/><rect x="2" y="2" width="16" height="8" rx="1.6" fill="currentColor"/><path d="M24 4.2v3.6a2 2 0 0 0 0-3.6z" fill="currentColor" opacity=".45"/></svg>
+                  </span>
+                </div>
+
+                <div class="app-tela">
+                  <div class="app-topo">
+                    <span>Bosque das Palmeiras</span>
+                    <strong>Apto 302</strong>
+                  </div>
+
+                  <div class="gastos__mes">
+                    <span>Outubro</span>
+                    <span class="setas" aria-hidden="true"><i>‹</i><i>›</i></span>
+                  </div>
+
+                  <div class="gastos__total">
+                    <b class="num">R$ 94,89</b>
+                    <span>103,0 kWh neste mês · 4 recargas</span>
+                    <span>média 0,9 por semana</span>
+                  </div>
+
+                  <div class="gastos__barras" aria-hidden="true">
+                    <span class="barra"><i style="height:22%"></i><span>sem 1</span></span>
+                    <span class="barra"><i style="height:58%"></i><span>sem 2</span></span>
+                    <span class="barra"><i style="height:34%"></i><span>sem 3</span></span>
+                    <span class="barra"><i style="height:78%"></i><span>sem 4</span></span>
+                  </div>
+
+                  <div class="recargas">
+                    <div class="recarga"><span><span class="recarga__dia num">12/10 · 23:14</span><span class="recarga__kwh">38,6 kWh</span></span><span class="recarga__rs num">R$ 35,56</span></div>
+                    <div class="recarga"><span><span class="recarga__dia num">19/10 · 22:41</span><span class="recarga__kwh">40,0 kWh</span></span><span class="recarga__rs num">R$ 36,85</span></div>
+                    <div class="recarga"><span><span class="recarga__dia num">24/10 · 01:07</span><span class="recarga__kwh">14,4 kWh</span></span><span class="recarga__rs num">R$ 13,27</span></div>
+                    <div class="recarga"><span><span class="recarga__dia num">29/10 · 00:38</span><span class="recarga__kwh">10,0 kWh</span></span><span class="recarga__rs num">R$ 9,21</span></div>
+                  </div>
+
+                  <div class="gastos__comp">
+                    <span>no eletroposto público</span>
+                    <b class="num">R$ 306,60</b>
+                  </div>
+                </div>
+
+                <nav class="tabbar" aria-hidden="true">
+                  <span class="tabbar__item"><svg><use href="#i-casa"/></svg>Início</span>
+                  <span class="tabbar__item"><svg><use href="#i-fila"/></svg>Fila</span>
+                  <span class="tabbar__item" aria-selected="true"><svg><use href="#i-gastos"/></svg>Gastos</span>
+                  <span class="tabbar__item"><svg><use href="#i-avisos"/></svg>Avisos</span>
+                </nav>
+                <div class="homebar" aria-hidden="true"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape secao--tinta">
+    <div class="container">
+      <p class="rodape__marca">Volarity<span>gestão energética · Chapecó, SC</span></p>
+      <p class="rodape__meta"><span>Startup Weekend Chapecó</span><span>·</span><span>2026</span></p>
+      <a class="link-sublinhado" href="painel/">Abrir o painel ao vivo</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>  <script src="js/dash.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

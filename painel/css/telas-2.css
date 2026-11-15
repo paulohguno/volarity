@@ -79,11 +79,11 @@
 .aviso:hover{ background: #FAFCFD; }
 .aviso__ico{ flex: none; width: 32px; height: 32px; }
 .aviso__ico svg{ width: 32px; height: 32px; border-radius: 8px; }
-.aviso__meio{ flex: 1 1 auto; min-width: 0; }
+.aviso__meio{ flex: 1 1 auto; min-width: 0; display: block; }
 .aviso__topo{ display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .aviso__titulo{ font-size: 13px; font-weight: 600; color: var(--tinta); letter-spacing: -.005em; }
 .aviso__hora{ flex: none; font-size: 11px; color: var(--aco); font-variant-numeric: tabular-nums; }
-.aviso__corpo{ font-size: 13px; line-height: 1.35; color: var(--texto-2); margin-top: 1px; }
+.aviso__corpo{ display: block; font-size: 13px; line-height: 1.35; color: var(--texto-2); margin-top: 1px; }
 .aviso__novo{
   position: absolute; top: 16px; left: 6px;
   width: 6px; height: 6px; border-radius: 50%;
@@ -100,7 +100,7 @@
 /* ---------- Síndico ---------- */
 
 .sindico-cab{
-  margin: 0 16px 12px;
+  margin: 4px 16px 12px;
   padding: 16px;
   border-radius: var(--r-20);
   background: var(--tinta);
@@ -189,7 +189,7 @@
   font-family: var(--f-num); font-size: 19px; font-weight: 600; letter-spacing: -.02em;
   color: var(--tinta); font-variant-numeric: tabular-nums;
 }
-.sindico-pe__acoes{ display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.sindico-pe__acoes{ display: grid; gap: 8px; }
 .sindico-pe__acoes .btn{ min-height: 44px; font-size: 13px; padding: 0 10px; }
 .sindico-nota{
   padding: 10px 16px 0;

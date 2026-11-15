@@ -16,18 +16,16 @@
 
   var conteudo = $('#conteudo');
   var tabbar = $('#tabbar');
-  var aparelho = $('#aparelho');
 
   var estado = {
     persona: 'morador',
     tela: 'visao',
     pausado: false,
     naFila: true,
-    posicao: D.FILA.minhaPosicao,
     avosLidos: false,
-    kwh: D.AO_VIVO.kwh,
     pct: D.AO_VIVO.pct,
-    rodando: false
+    pctF: D.AO_VIVO.pct,
+    kwh: D.AO_VIVO.kwh
   };
 
   /* ---------------- abas por persona ---------------- */
@@ -65,7 +63,8 @@
     $$('.tab', tabbar).forEach(function (a) {
       var on = a.getAttribute('data-aba') === id;
       a.classList.toggle('is-ativo', on);
-      a.setAttribute('aria-selected', on ? 'true' : 'false');
+      if (on) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
     });
   }
 
@@ -77,7 +76,16 @@
     return ok ? id : ABAS[estado.persona][0].id;
   }
 
+  function personaDoHash() {
+    var id = (location.hash || '').slice(1);
+    if (!id) return 'morador';
+    return ABAS.sindico.some(function (a) { return a.id === id; }) ? 'sindico' : 'morador';
+  }
+
   function render() {
+    var p = personaDoHash();
+    if (p !== estado.persona) aplicarPersona(p);
+
     var id = telaDoHash();
     estado.tela = id;
 
@@ -95,6 +103,17 @@
     depoisDeRender(id);
   }
 
+  /* persona: só pinta os botões e remonta a tab bar (não mexe na URL) */
+  function aplicarPersona(p) {
+    estado.persona = p;
+    $$('.persona__btn').forEach(function (b) {
+      var on = b.getAttribute('data-persona') === p;
+      b.classList.toggle('is-ativo', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    montarTabbar();
+  }
+
   function depoisDeRender(id) {
     if (id === 'visao') { ligarVisao(); ligarRecargaAoVivo(); }
     if (id === 'fila') ligarFila();
@@ -109,14 +128,7 @@
 
   function trocarPersona(p) {
     if (!ABAS[p] || p === estado.persona) return;
-    estado.persona = p;
-    $$('.persona__btn').forEach(function (b) {
-      var on = b.getAttribute('data-persona') === p;
-      b.classList.toggle('is-ativo', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
-    });
-    montarTabbar();
-    aparelho.classList.toggle('is-sindico', p === 'sindico');
+    aplicarPersona(p);
     location.hash = '#' + ABAS[p][0].id;
   }
 
@@ -159,7 +171,7 @@
   }
 
   function restaTempo() {
-    var min = Math.max(0, Math.round((100 - estado.pct) * 1.25));
+    var min = Math.max(0, Math.round((100 - estado.pct) * (80 / 36)));
     var h = Math.floor(min / 60), m = min % 60;
     if (h && m) return h + ' h ' + (m < 10 ? '0' + m : m);
     if (h) return h + ' h';
@@ -260,6 +272,12 @@
       ligarAvancoFila();
     });
 
+    var comecar = $('#btn-comecar');
+    umaVez(comecar, 'click', function () {
+      location.hash = '#visao';
+      mostrarPush('Recarga iniciada', 'Vaga 15 · Apto ' + D.CONDOMINIO.usuario.apto, 'Cartão RFID lido');
+    });
+
     ligarAvancoFila();
   }
 
@@ -284,6 +302,23 @@
         setTxt('#fila-previsao', 'agora');
         var rot = $('.fila-topo__rot');
         if (rot) rot.textContent = 'Sua vez';
+        var pe = $('.fila-topo__pe');
+        if (pe) pe.innerHTML = '<span>Carregador da Vaga 15 livre</span><span><b>10 min</b> para começar</span>';
+        var btnSair = $('#btn-sair-fila');
+        if (btnSair) {
+          /* troca o botão por um novo (o handler antigo de "sair" não vem junto) */
+          var novo = document.createElement('button');
+          novo.id = 'btn-comecar';
+          novo.className = 'btn btn--primario btn--bloco';
+          novo.textContent = 'Começar recarga';
+          btnSair.replaceWith(novo);
+          umaVez(novo, 'click', function () {
+            location.hash = '#visao';
+            mostrarPush('Recarga iniciada', 'Vaga 15 · Apto ' + D.CONDOMINIO.usuario.apto, 'Cartão RFID lido');
+          });
+        }
+        mostrarPush('Sua vez', 'Carregador da Vaga 15 livre', 'Você tem 10 min para começar');
+        ligarFila();
       }
     }, 5200);
   }

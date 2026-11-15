@@ -178,12 +178,20 @@
 
   /* ---------------- cadastro (síndico) ---------------- */
 
+  var rnd = mulberry32(0x5EED1A);     // seed fixa: as placas são sempre as mesmas
+  var LETRAS = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+
   var CADASTRO = apartamentos.map(function (a) {
+    var l1 = LETRAS[Math.floor(rnd() * LETRAS.length)];
+    var l2 = LETRAS[Math.floor(rnd() * LETRAS.length)];
+    var d1 = Math.floor(rnd() * 10);
+    var d2 = Math.floor(rnd() * 10);
     return {
       apto: a.apto,
       carro: a.carro,
       rfid: a.rfid,
-      placa: 'Q' + a.apto.slice(0, 1) + 'X' + a.apto.slice(1),
+      placa: l1 + l2 + d1 + 'X' + d2 + a.apto.slice(0, 2),
+      kwh: a.kwh,
       ativo: true
     };
   });

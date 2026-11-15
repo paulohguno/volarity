@@ -170,3 +170,13 @@ h1,h2{ letter-spacing:-.045em; }
 .sind-card__rot em{ color:var(--tinta); font-weight:600; }
 .sind-mini{ display:flex; align-items:flex-end; gap:2px; height:26px; margin-top:8px; }
 .sind-mini i{ flex:1; background:var(--aco); opacity:.7; border-radius:1px; }
+
+/* ---------- títulos 15% menores (pedido da equipe) ---------- */
+:root{
+  --t-hero:  clamp(61px, 10.2vw, 136px);
+  --t-h2:    clamp(41px, 6.8vw, 88px);
+  --t-giant: clamp(82px, 13.6vw, 170px);
+  --t-h3:    clamp(26px, 2.7vw, 34px);
+}
+.prova .numero{ font-size:clamp(61px, 14.5vw, 170px); }
+.passo b{ font-size:clamp(19px, 1.9vw, 24px); }

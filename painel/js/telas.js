@@ -128,11 +128,12 @@
   function gastos() {
     var eu = D.eu;
     var max = Math.max.apply(null, D.semanas) || 1;
-    var imax = D.semanas.indexOf(Math.max.apply(null, D.semanas));
+    var ultima = 0;
+    D.semanas.forEach(function (v, i) { if (v > 0) ultima = i; });
     var barras = D.semanas.map(function (v, i) {
       var h = Math.max(3, Math.round((v / max) * 46));
       return '<div class="semana">' +
-        '<span class="semana__barra' + (i === imax ? ' is-atual' : '') + '" style="height:' + h + 'px"></span>' +
+        '<span class="semana__barra' + (i === ultima ? ' is-atual' : '') + '" style="height:' + h + 'px"></span>' +
         '<span class="semana__rot">S' + (i + 1) + '</span></div>';
     }).join('');
 
@@ -231,8 +232,8 @@
           'Recuperáveis de quem carregou, sem rateio para os outros ' +
           (D.CONDOMINIO.unidades - D.apartamentos.length) + ' apartamentos.</p>' +
         '<div class="sindico-pe__acoes">' +
+          '<button class="btn btn--contorno" id="btn-compartilhar">Compartilhar com a assembleia</button>' +
           '<button class="btn btn--primario" id="btn-lancar">Lançar na taxa</button>' +
-          '<button class="btn btn--contorno" id="btn-compartilhar">Compartilhar</button>' +
         '</div>' +
       '</div>' +
       '<p class="sindico-nota">Valores simulados de um condomínio piloto de Chapecó, com a tarifa real da Celesc. ' +
@@ -316,8 +317,8 @@
             '<span class="dash-card__vaga">livre</span></div>' +
           '<div class="dash-livre">' +
             '<span class="dash-livre__ico">' + ICO.raio + '</span>' +
-            '<span><span class="dash-livre__t">Disponível</span>' +
-              '<span class="dash-livre__s">Apto 504 saiu às 06:02</span></span>' +
+            '<div><div class="dash-livre__t">Disponível</div>' +
+              '<div class="dash-livre__s">Apto 504 saiu às 06:02</div></div>' +
           '</div>' +
         '</div>' +
         '<div class="dash-card dash-card--tabela">' +

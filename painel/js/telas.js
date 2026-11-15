@@ -21,7 +21,7 @@
     seta: '<svg class="linha__seta" viewBox="0 0 8 13" fill="none" aria-hidden="true"><path d="M1.5 1.5 6.5 6.5l-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     esq: '<svg viewBox="0 0 9 15" fill="none" aria-hidden="true"><path d="M7.5 1.5 1.5 7.5l6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     dir: '<svg viewBox="0 0 9 15" fill="none" aria-hidden="true"><path d="M1.5 1.5 7.5 7.5l-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-    carro: '<svg viewBox="0 0 120 60" fill="none" aria-hidden="true"><path d="M8 44h104M14 44c0-4 3-7 7-7h78c4 0 7 3 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M26 37c2-9 6-14 12-16 8-3 26-3 34 0 6 2 10 7 12 16" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M40 22h30" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="34" cy="45" r="6" stroke="currentColor" stroke-width="2.2"/><circle cx="86" cy="45" r="6" stroke="currentColor" stroke-width="2.2"/></svg>'
+    carro: '<svg class="carro-svg" viewBox="0 0 300 92" aria-hidden="true"><line class="chao" x1="0" y1="85" x2="300" y2="85"/><rect class="wb" x="6" y="18" width="28" height="48" rx="6"/><rect class="wb-tela" x="11.5" y="25" width="17" height="10" rx="2"/><circle class="led" cx="20" cy="46" r="3"/><path class="cabo" d="M20 66 C20 80 44 80 62 72 C74 66 82 60 86 54"/><g transform="translate(60 0)"><path class="corpo" d="M14 64 C14 56 16 50 22 47 L40 42 C52 30 66 24 84 22 L150 21 C166 21 178 28 190 38 L214 44 C224 46 230 52 230 60 L230 64 C230 66 228 68 226 68 L205 68 A20 20 0 0 0 165 68 L77 68 A20 20 0 0 0 37 68 L18 68 C16 68 14 66 14 64 Z"/><path class="vidro" d="M50 42 C60 32 70 27 86 26 L117 26 L117 42 Z"/><path class="vidro" d="M123 26 L148 26 C160 26 170 31 181 41 L123 42 Z"/><path class="friso" d="M120 46 V64 M30 54 H220"/><path class="farol" d="M215 48 L226 51"/><circle class="porta" cx="26" cy="53" r="2.6"/><circle class="roda" cx="57" cy="68" r="15"/><circle class="aro" cx="57" cy="68" r="8.5"/><circle class="roda" cx="185" cy="68" r="15"/><circle class="aro" cx="185" cy="68" r="8.5"/></g></svg>'
   };
 
   /* ---------------- helpers ---------------- */
@@ -95,7 +95,7 @@
     var linhas = F.pessoas.map(function (p, i) {
       return '<li class="linha' + (p.eu ? ' is-destaque' : '') + '">' +
         '<span class="linha__pos">' + (i + 1) + 'º</span>' +
-        '<span class="linha__av' + (p.eu ? ' linha__av--tinta' : '') + '">' + esc(p.apto.slice(0, 2)) + '</span>' +
+        '<span class="linha__av' + (p.eu ? ' linha__av--tinta' : '') + '">' + esc(p.apto) + '</span>' +
         '<span class="linha__meio">' +
           '<span class="linha__titulo">' + esc(p.nome) +
             (p.eu ? ' <span class="voce">Você</span>' : '') + '</span>' +
@@ -247,7 +247,7 @@
   function cadastro() {
     var itens = D.CADASTRO.map(function (c) {
       return '<li class="linha cadastro-item">' +
-        '<span class="linha__av linha__av--tinta">' + esc(c.apto.slice(0, 2)) + '</span>' +
+        '<span class="linha__av linha__av--tinta">' + esc(c.apto) + '</span>' +
         '<span class="linha__meio">' +
           '<span class="linha__titulo">Apto ' + esc(c.apto) + '</span>' +
           '<span class="linha__meta">' + esc(c.carro) + '</span>' +
@@ -298,7 +298,7 @@
             '<span class="dash-card__vaga">Vaga ' + A.vaga + '</span>' +
           '</div>' +
           '<div class="carro">' + ICO.carro +
-            '<span class="carro__wallbox"></span></div>' +
+            '</div>' +
           '<div class="dash-num">' +
             '<div class="dash-num__item"><span class="dash-num__rot">Apto</span>' +
               '<span class="dash-num__val">' + A.apto + '</span></div>' +

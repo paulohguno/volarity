@@ -1,7 +1,7 @@
 /* ============================================================
    Volarity · protótipo do app — comportamento
    Abas por hash, persona, recarga ao vivo, push, fila, compartilhar.
-   Sem build, sem dependência. GSAP é opcional (só enfeite).
+   Sem build, sem dependência de runtime. Lê os dados de dados.js e as telas de telas.js.
    ============================================================ */
 (function (global) {
   'use strict';
@@ -21,6 +21,7 @@
     persona: 'morador',
     tela: 'visao',
     pausado: false,
+    concluida: false,
     naFila: true,
     avosLidos: false,
     pct: D.AO_VIVO.pct,
@@ -115,7 +116,7 @@
   }
 
   function depoisDeRender(id) {
-    if (id === 'visao') { ligarVisao(); ligarRecargaAoVivo(); }
+    if (id === 'visao') { ligarVisao(); restaurarVisao(); ligarRecargaAoVivo(); }
     if (id === 'fila') ligarFila();
     if (id === 'gastos') ligarGastos();
     if (id === 'alertas') ligarAvisos();
@@ -137,6 +138,7 @@
   function ligarVisao() {
     var btn = $('#btn-pausar');
     umaVez(btn, 'click', function () {
+      if (estado.concluida) { reiniciarRecarga(); return; }
       estado.pausado = !estado.pausado;
       btn.textContent = estado.pausado ? 'Retomar recarga' : 'Pausar recarga';
       var st = $('#status-recarga');
@@ -148,14 +150,35 @@
     });
   }
 
+  /* se a tela foi remontada, devolve o estado atual (pausada / concluída) */
+  function restaurarVisao() {
+    if (estado.concluida) {
+      estado.pct = 100;
+      estado.kwh = KWH_FIM;
+      pintarAoVivo();
+      concluirRecarga();
+    } else if (estado.pausado) {
+      var st = $('#status-recarga');
+      if (st) { st.className = 'status status--parado'; st.innerHTML = '<i class="status__ponto"></i>Recarga pausada'; }
+      var btn = $('#btn-pausar');
+      if (btn) btn.textContent = 'Retomar recarga';
+    }
+  }
+
   function pintarAoVivo() {
     var kwh = D.kwh(estado.kwh), rs = D.rs(Math.round(estado.kwh * D.TARIFA * 100) / 100);
 
     setTxt('#val-kwh', kwh);
     setTxt('#val-rs', rs);
+    setTxt('#dash-kw', D.nf(D.AO_VIVO.kw, 1) + ' kW');
     setTxt('#dash-kwh', kwh);
     setTxt('#dash-rs', rs);
     setTxt('#dash-pct', estado.pct + '% · faltam ' + restaTempo());
+
+    var pe = $('#pe-tempo');
+    if (pe && !estado.concluida) {
+      pe.innerHTML = 'faltam <strong>' + restaTempo() + '</strong> · até 100%';
+    }
 
     var pct = $('#pct-val');
     if (pct) pct.innerHTML = estado.pct + '<span>%</span>';
@@ -203,15 +226,21 @@
     return KWH_INI + t * (KWH_FIM - KWH_INI);
   }
 
+  var jaComecou = false;
+
   function ligarRecargaAoVivo() {
-    if (ESTATICO || estado.pausado) return;
+    if (ESTATICO || estado.pausado || estado.concluida) return;
+    if (jaComecou && timerAoVivo) return;   // já contando: não zerar a fração
     pararAoVivo();
-    estado.pctF = estado.pct;
-    estado.kwh = kwhDePorcento(estado.pctF);
+    if (!jaComecou) {
+      jaComecou = true;
+      estado.pctF = estado.pct;
+      estado.kwh = kwhDePorcento(estado.pctF);
+    }
     pintarAoVivo();
 
     timerAoVivo = global.setInterval(function () {
-      if (estado.tela !== 'visao' && estado.tela !== 'dashboard') return;
+      /* a recarga corre mesmo fora da aba Início; pintarAoVivo ignora o que não existe */
       /* +1% a cada ~6 s (900 ms × 6,7), como no roteiro da demo */
       estado.pctF = Math.min(100, estado.pctF + 0.15);
       estado.pct = Math.floor(estado.pctF);
@@ -221,7 +250,7 @@
         estado.kwh = KWH_FIM;
         pararAoVivo();
         concluirRecarga();
-        mostrarPush('Carga concluída', D.kwh(KWH_FIM) + ' · ' + D.rs(50.76), 'Apto 302 · Vaga 14');
+        mostrarPush('Carga concluída · ' + D.kwh(KWH_FIM) + ' · ' + D.rs(50.76), 'Apto 302 · Vaga 14');
       }
       pintarAoVivo();
     }, 900);
@@ -232,6 +261,8 @@
   }
 
   function concluirRecarga() {
+    estado.concluida = true;
+    estado.pausado = false;
     var st = $('#status-recarga');
     if (st) { st.className = 'status status--fim'; st.innerHTML = '<i class="status__ponto"></i>Carga concluída'; }
     var arco = $('#anel-arco');
@@ -242,6 +273,20 @@
     if (pe) pe.innerHTML = '<strong>' + D.kwh(KWH_FIM) + ' · ' + D.rs(50.76) + '</strong>';
     var btn = $('#btn-pausar');
     if (btn) { btn.textContent = 'Nova recarga'; }
+  }
+
+  /* "Nova recarga": volta ao estado inicial da demo (64%, 22,4 kWh) */
+  function reiniciarRecarga() {
+    estado.concluida = false;
+    estado.pausado = false;
+    estado.pct = PCT_INI;
+    estado.pctF = PCT_INI;
+    estado.kwh = KWH_INI;
+    jaComecou = false;
+    var sec = document.getElementById('visao');
+    if (sec) sec.innerHTML = T.visao();
+    depoisDeRender('visao');
+    mostrarPush('Recarga iniciada', 'Vaga ' + D.AO_VIVO.vaga + ' · Apto ' + D.AO_VIVO.apto);
   }
 
   /* ---------------- Fila ---------------- */
@@ -258,24 +303,25 @@
       sair.outerHTML =
         '<button class="btn btn--primario btn--bloco" id="btn-entrar-fila">Entrar na fila</button>';
       ligarFila();
-      mostrarPush('Fila', 'Você saiu da fila', 'Vaga 14 · Apto ' + D.CONDOMINIO.usuario.apto);
+      mostrarPush('Você saiu da fila', 'Vaga 14 · Apto ' + D.CONDOMINIO.usuario.apto);
     });
 
     var entrar = $('#btn-entrar-fila');
     umaVez(entrar, 'click', function () {
       estado.naFila = true;
       avancoFeito = false;
+      tentativasFila = 0;
       var sec = document.getElementById('fila');
       sec.innerHTML = T.fila();
       depoisDeRender('fila');
-      mostrarPush('Vaga 15 livre', 'Sua vez em breve', 'Você entrou na fila · 1º da fila');
+      mostrarPush('Você entrou na fila · ' + D.FILA.minhaPosicao + 'º · ' + D.FILA.previsao, 'Carregador compartilhado · 2 pontos');
       ligarAvancoFila();
     });
 
     var comecar = $('#btn-comecar');
     umaVez(comecar, 'click', function () {
       location.hash = '#visao';
-      mostrarPush('Recarga iniciada', 'Vaga 15 · Apto ' + D.CONDOMINIO.usuario.apto, 'Cartão RFID lido');
+      mostrarPush('Recarga iniciada', 'Vaga 15 · Apto ' + D.CONDOMINIO.usuario.apto);
     });
 
     ligarAvancoFila();
@@ -288,39 +334,46 @@
     var alvo = $('#fila-pos');
     if (!alvo) return;
     avancoFeito = true;
-    global.setTimeout(function () {
-      if (estado.tela !== 'fila') return;
-      var lista = $('#fila-lista');
-      if (!lista) return;
-      var voce = $('.linha.is-destaque', lista);
-      var anterior = lista.firstElementChild;
-      if (voce && anterior && anterior !== voce) {
-        lista.insertBefore(voce, anterior);
-        $$('.linha__pos', lista).forEach(function (p, i) { p.textContent = (i + 1) + 'º'; });
-        var pos = $('#fila-pos');
-        if (pos) pos.innerHTML = '1º <span>na fila</span>';
-        setTxt('#fila-previsao', 'agora');
-        var rot = $('.fila-topo__rot');
-        if (rot) rot.textContent = 'Sua vez';
-        var pe = $('.fila-topo__pe');
-        if (pe) pe.innerHTML = '<span>Carregador da Vaga 15 livre</span><span><b>10 min</b> para começar</span>';
-        var btnSair = $('#btn-sair-fila');
-        if (btnSair) {
-          /* troca o botão por um novo (o handler antigo de "sair" não vem junto) */
-          var novo = document.createElement('button');
-          novo.id = 'btn-comecar';
-          novo.className = 'btn btn--primario btn--bloco';
-          novo.textContent = 'Começar recarga';
-          btnSair.replaceWith(novo);
-          umaVez(novo, 'click', function () {
-            location.hash = '#visao';
-            mostrarPush('Recarga iniciada', 'Vaga 15 · Apto ' + D.CONDOMINIO.usuario.apto, 'Cartão RFID lido');
-          });
-        }
-        mostrarPush('Sua vez', 'Carregador da Vaga 15 livre', 'Você tem 10 min para começar');
-        ligarFila();
+    global.setTimeout(avancarFila, 2800);
+  }
+
+  var tentativasFila = 0;
+
+  function avancarFila() {
+    var lista = $('#fila-lista');
+    /* saiu da aba no meio da espera: tenta de novo quando voltar (até 20×) */
+    if (estado.tela !== 'fila' || !lista || !estado.naFila) {
+      if (tentativasFila++ < 20) global.setTimeout(avancarFila, 900);
+      return;
+    }
+    var voce = $('.linha.is-destaque', lista);
+    var anterior = lista.firstElementChild;
+    if (voce && anterior && anterior !== voce) {
+      lista.insertBefore(voce, anterior);
+      $$('.linha__pos', lista).forEach(function (p, i) { p.textContent = (i + 1) + 'º'; });
+      var pos = $('#fila-pos');
+      if (pos) pos.innerHTML = '1º <span>na fila</span>';
+      setTxt('#fila-previsao', 'agora');
+      var rot = $('.fila-topo__rot');
+      if (rot) rot.textContent = 'Sua vez';
+      var pe = $('.fila-topo__pe');
+      if (pe) pe.innerHTML = '<span>Carregador da Vaga 15 livre</span><span><b>10 min</b> para começar</span>';
+      var btnSair = $('#btn-sair-fila');
+      if (btnSair) {
+        /* troca o botão por um novo (o handler antigo de "sair" não vem junto) */
+        var novo = document.createElement('button');
+        novo.id = 'btn-comecar';
+        novo.className = 'btn btn--primario btn--bloco';
+        novo.textContent = 'Começar recarga';
+        btnSair.replaceWith(novo);
+        umaVez(novo, 'click', function () {
+          location.hash = '#visao';
+          mostrarPush('Recarga iniciada', 'Vaga 15 · Apto ' + D.CONDOMINIO.usuario.apto);
+        });
       }
-    }, 5200);
+      mostrarPush('Sua vez · Vaga 15 livre', 'Você tem 10 min para começar');
+      ligarFila();
+    }
   }
 
   /* ---------------- Gastos ---------------- */
@@ -334,14 +387,14 @@
         '<p class="tela__sub">Só o que você carregou</p></div>' +
         '<span class="tela__apto">Outubro 2026</span></div>' +
         '<div class="mes"><span class="mes__nome">Outubro</span>' +
-        '<span class="mes__nav"><button class="mes__btn" id="mes-voltar" aria-label="Voltar">' +
-        T.ICO.dir + '</button></span></div>' +
+        '<span class="mes__nav"><button class="mes__btn" id="mes-voltar" aria-label="Voltar para novembro">' +
+        T.ICO.esq + '</button></span></div>' +
         '<div class="vazio"><span class="vazio__ico">' + T.ICO.vazio + '</span>' +
         '<p class="vazio__t">Nenhuma recarga em outubro</p>' +
         '<p class="vazio__s">O carro elétrico entrou no prédio em novembro.</p></div>';
       $('#mes-voltar').addEventListener('click', function () {
         sec.innerHTML = T.gastos();
-        ligarGastos();
+        depoisDeRender('gastos');
       });
     });
   }
@@ -395,7 +448,7 @@
     umaVez(lancar, 'click', function () {
       lancar.textContent = 'Lançado na taxa ✓';
       lancar.disabled = true;
-      mostrarPush('Volarity · Síndico', 'Lançado na taxa de novembro',
+      mostrarPush('Lançado na taxa de novembro',
         D.rs(D.TOTAL.rs) + ' em ' + D.apartamentos.length + ' apartamentos');
     });
 
@@ -423,15 +476,20 @@
     var texto = resumoTexto();
     var res = $('#sheet-resumo');
     if (res) res.textContent = texto;
-    var sheet = $('#sheet');
-    if (sheet) { sheet.hidden = false; }
 
+    /* Web Share nativo quando existe; senão, copia o resumo e mostra no sheet */
     if (navigator.share) {
       navigator.share({ title: 'Relatório Volarity · novembro', text: texto })
-        .catch(function () { /* usuário cancelou */ });
+        .catch(function () { abrirSheet(); });
       return;
     }
+    abrirSheet();
     copiar(texto, '#sheet-copiar', 'Copiar resumo');
+  }
+
+  function abrirSheet() {
+    var sheet = $('#sheet');
+    if (sheet) sheet.hidden = false;
   }
 
   function copiar(texto, sel, rotOriginal) {
@@ -471,7 +529,7 @@
 
   var pushTimer = null;
 
-  function mostrarPush(titulo, corpo, sub) {
+  function mostrarPush(titulo, corpo) {
     var push = $('#push');
     if (!push) return;
     setTxt('#push-hora', 'agora');
@@ -518,18 +576,16 @@
 
     global.addEventListener('hashchange', render);
 
-    /* push de abertura: recarga em andamento */
-    global.setTimeout(function () {
-      if (estado.tela === 'visao') {
-        mostrarPush('Carregando · ' + estado.pct + '% · faltam ' + restaTempo(), 'Vaga 14 · Apto 302');
-      }
-    }, ESTATICO ? 400 : 2200);
+    /* push de abertura: recarga em andamento (não no modo estático) */
+    if (!ESTATICO) {
+      global.setTimeout(function () {
+        if (estado.tela === 'visao') {
+          mostrarPush('Carregando · ' + estado.pct + '% · faltam ' + restaTempo(), 'Vaga 14 · Apto 302');
+        }
+      }, 2200);
+    }
 
     /* quando a bateria chega em 100%, concluirRecarga() avisa (acima) */
-
-    if (!ESTATICO) {
-      document.documentElement.classList.add('is-vivo');
-    }
   }
 
   if (document.readyState === 'loading') {

@@ -24,7 +24,7 @@
   background: var(--clara-2);
 }
 .persona__btn{
-  min-height: 30px; padding: 0 13px;
+  min-height: 44px; padding: 0 16px;
   border-radius: 999px;
   font-size: 12px; font-weight: 600; letter-spacing: -.005em;
   color: var(--texto-2);

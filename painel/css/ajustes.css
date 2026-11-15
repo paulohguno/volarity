@@ -1,0 +1,25 @@
+/* Volarity app · ajustes finos (carregado por último) */
+:root{
+  --f-app: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Schibsted Grotesk", "Helvetica Neue", sans-serif;
+  --f-num: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Schibsted Grotesk", sans-serif;
+}
+/* alternador Morador/Síndico não fica mais por cima do conteúdo */
+.persona{ position:relative; top:auto; }
+
+/* número do apartamento no círculo */
+.linha__av{ font-size:10.5px; letter-spacing:-.02em; }
+
+/* carro novo */
+.carro{ height:auto !important; padding:10px 8px 4px; display:block; }
+.carro svg{ height:auto !important; width:100%; max-width:280px; display:block; margin:0 auto; }
+.carro-svg .chao{ stroke:var(--clara-2); stroke-width:2; stroke-linecap:round; }
+.carro-svg .corpo{ fill:var(--tinta); }
+.carro-svg .vidro{ fill:var(--aco); opacity:.55; }
+.carro-svg .friso{ fill:none; stroke:rgba(237,242,244,.16); stroke-width:1.2; }
+.carro-svg .farol{ stroke:var(--clara); stroke-width:2.4; stroke-linecap:round; }
+.carro-svg .roda{ fill:#16171F; }
+.carro-svg .aro{ fill:none; stroke:var(--aco); stroke-width:2.2; }
+.carro-svg .wb{ fill:#fff; stroke:var(--tinta); stroke-width:1.6; }
+.carro-svg .wb-tela{ fill:var(--tinta); }
+.carro-svg .led, .carro-svg .porta{ fill:var(--mostarda); }
+.carro-svg .cabo{ fill:none; stroke:var(--tinta); stroke-width:2.4; stroke-linecap:round; }
